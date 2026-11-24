@@ -70,3 +70,5 @@ app.*.map.json
 **/build/
 **/*.apk
 **/*.aab
+
+/EGY_DEVELOPMENT_ai/Front/
