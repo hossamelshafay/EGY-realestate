@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- EGY launch background — solid ivory, no logo, seamless with Flutter Splash -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/egy_splash_bg" />
+</layer-list>

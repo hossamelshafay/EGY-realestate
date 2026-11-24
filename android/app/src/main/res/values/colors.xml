@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- EGY splash ivory background — matches CairoSkylinePainter and Flutter SplashPage -->
+    <color name="egy_splash_bg">#FAF6EE</color>
+</resources>

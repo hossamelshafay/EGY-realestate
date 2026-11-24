@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/favorites/{favoriteId} {
+      function ownsFavorites() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function isValidFavorite() {
+        let data = request.resource.data;
+        return data.keys().hasAll(['propertyId', 'addedAt', 'propertySnapshot'])
+          && data.keys().hasOnly(['propertyId', 'addedAt', 'propertySnapshot'])
+          && data.propertyId is int
+          && data.propertyId > 0
+          && favoriteId == string(data.propertyId)
+          && data.addedAt == request.time
+          && data.propertySnapshot is map
+          && data.propertySnapshot.id == data.propertyId;
+      }
+
+      allow read, delete: if ownsFavorites();
+      allow create: if ownsFavorites() && isValidFavorite();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

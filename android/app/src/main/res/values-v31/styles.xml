@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Android 12+ (API 31) Splash Screen API overrides.
+
+    Android 12 and above enforce their own splash screen API and ignore the
+    legacy windowBackground drawable. We must set windowSplashScreenBackground
+    here so the mandatory system splash is the same ivory as our Flutter Splash.
+
+    windowSplashScreenAnimatedIcon is intentionally left as the app launcher
+    icon (the system default) rather than cleared entirely — the platform
+    requires a valid icon and will show the launcher icon if none is provided.
+    Setting it to @android:color/transparent would cause a crash on some OEMs.
+    The system splash is dismissed the moment Flutter renders its first frame,
+    so the icon is barely visible.
+-->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!-- Same ivory as our Flutter Splash — eliminates flash on Android 12+ -->
+        <item name="android:windowSplashScreenBackground">@color/egy_splash_bg</item>
+        <!-- Keep the system splash duration short — Flutter dismisses it on frame 1 -->
+        <item name="android:windowSplashScreenAnimationDuration">200</item>
+        <!-- Legacy window background still used by FlutterActivity on API 31 -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/egy_splash_bg</item>
+    </style>
+</resources>

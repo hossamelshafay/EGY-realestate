@@ -1,0 +1,315 @@
+﻿{
+    "@@locale":  "en",
+    "appName":  "EGY Development",
+    "@appName":  {
+                     "description":  "The application name displayed in titles and headers."
+                 },
+    "loading":  "Loading…",
+    "@loading":  {
+                     "description":  "Generic loading message."
+                 },
+    "retryButton":  "Retry",
+    "@retryButton":  {
+                         "description":  "Label for the retry action button."
+                     },
+    "somethingWentWrong":  "Something went wrong.",
+    "@somethingWentWrong":  {
+                                "description":  "Generic error message."
+                            },
+    "noResultsFound":  "No results found.",
+    "@noResultsFound":  {
+                            "description":  "Empty-state title when a list has no items."
+                        },
+    "noResultsFoundSubtitle":  "Try adjusting your search or filters.",
+    "@noResultsFoundSubtitle":  {
+                                    "description":  "Empty-state subtitle."
+                                },
+    "back":  "Back",
+    "@back":  {
+                  "description":  "Semantic label for the back navigation button."
+              },
+    "close":  "Close",
+    "@close":  {
+                   "description":  "Semantic label for a close / dismiss action."
+               },
+    "ok":  "OK",
+    "@ok":  {
+                "description":  "Affirmative action label."
+            },
+    "cancel":  "Cancel",
+    "@cancel":  {
+                    "description":  "Cancel action label."
+                },
+    "save":  "Save",
+    "@save":  {
+                  "description":  "Save action label."
+              },
+    "confirm":  "Confirm",
+    "@confirm":  {
+                     "description":  "Confirm action label."
+                 },
+    "delete":  "Delete",
+    "@delete":  {
+                    "description":  "Delete action label."
+                },
+    "search":  "Search",
+    "@search":  {
+                    "description":  "Search action label."
+                },
+    "settings":  "Settings",
+    "@settings":  {
+                      "description":  "Settings screen title."
+                  },
+    "home":  "Home",
+    "@home":  {
+                  "description":  "Home screen title."
+              },
+    "favorites":  "Favorites",
+    "@favorites":  {
+                       "description":  "Favorites screen title."
+                   },
+    "recommendations":  "Recommendations",
+    "@recommendations":  {
+                             "description":  "Recommendations screen title."
+                         },
+    "pricePrediction":  "Price Prediction",
+    "@pricePrediction":  {
+                             "description":  "Price Prediction screen title."
+                         },
+    "aiChat":  "AI Assistant",
+    "@aiChat":  {
+                    "description":  "AI Chat screen title."
+                },
+    "editProfile":  "Edit Profile",
+    "@editProfile":  {
+                         "description":  "Edit Profile screen title."
+                     },
+    "changeEmail":  "Change Email",
+    "@changeEmail":  {
+                         "description":  "Change Email screen title."
+                     },
+    "changePassword":  "Change Password",
+    "@changePassword":  {
+                            "description":  "Change Password screen title."
+                        },
+    "welcomeTagline":  "Smart Real Estate in Egypt",
+    "featureRecommendations":  "AI Recommendations",
+    "featurePrice":  "Price Estimation",
+    "featureAssistant":  "Property Assistant",
+    "getStarted":  "Get Started",
+    "languageEnglish":  "EN",
+    "languageArabic":  "AR",
+    "skip":  "Skip",
+    "onboardingTitle1":  "Set Your Preferences",
+    "onboardingTitle2":  "Find the Right Property",
+    "onboardingTitle3":  "Contact the Owner",
+    "onboardingDescription1":  "Choose budget, area, size, and must-have amenities to get better matches.",
+    "onboardingDescription2":  "Search, compare, and choose from properties with ease.",
+    "onboardingDescription3":  "Explore properties and find a place that feels like home.",
+    "swipeUp":  "Swipe Up",
+    "createAccount":  "Create Account",
+    "logIn":  "Log In",
+    "authWelcome":  "Welcome back to the EGY Development smart real estate platform",
+    "authJoin":  "Join the smart real estate platform in Egypt",
+    "authResetDescription":  "Enter your email to receive a password reset link.",
+    "email":  "Email",
+    "password":  "Password",
+    "fullName":  "Full name",
+    "confirmPassword":  "Confirm password",
+    "forgotPassword":  "Forgot password?",
+    "resetTitle":  "Reset password",
+    "sendReset":  "Send reset link",
+    "resetSent":  "If an account exists for this email, a reset link has been sent.",
+    "continueGoogle":  "Continue with Google",
+    "orContinue":  "Or continue with",
+    "noAccount":  "Don?t have an account?",
+    "haveAccount":  "Already have an account?",
+    "requiredField":  "This field is required.",
+    "invalidEmail":  "Enter a valid email address.",
+    "shortPassword":  "Use at least 8 characters.",
+    "passwordMismatch":  "Passwords do not match.",
+    "invalidCredentials":  "Email or password is incorrect.",
+    "emailInUse":  "This email is already in use.",
+    "authNetwork":  "Check your internet connection and try again.",
+    "authGeneric":  "Unable to complete this request. Please try again.",
+    "authCancelled":  "Sign-in was cancelled.",
+    "showPassword":  "Show password",
+    "hidePassword":  "Hide password",
+    "homeWelcome":  "Welcome home",
+    "homeWelcomeName":  "Welcome, {name}",
+    "@homeWelcomeName":  {
+                             "placeholders":  {
+                                                  "name":  {
+                                                               "type":  "String"
+                                                           }
+                                              }
+                         },
+    "homeMember":  "Your next chapter starts here",
+    "homeSearchHint":  "Search for property, area, or developer...",
+    "homeDiscover":  "Find a place to call home",
+    "homeAll":  "All homes",
+    "homeAllLocations":  "All locations",
+    "homeApartment":  "Apartment",
+    "homeVilla":  "Villa",
+    "homeStudio":  "Studio",
+    "homeNewCairo":  "New Cairo",
+    "homeGiza":  "Giza",
+    "homeAlexandria":  "Alexandria",
+    "homeFeatured":  "Explore Featured Properties",
+    "homePreview":  "Preview homes · not live listings",
+    "homePreviewDetails":  "Illustrative properties and prices. Favorites are temporary.",
+    "homeAiTools":  "AI Tools",
+    "homeHybrid":  "Hybrid property recommendations",
+    "homeHybridDescription":  "Find a match for your preferences.",
+    "homePriceDescription":  "Explore the value of your next home.",
+    "homeAssistantDescription":  "A little guidance for your property journey.",
+    "homeComingSoon":  "Coming soon",
+    "homeFeaturePending":  "This feature will be available in a future update.",
+    "homeFilters":  "More filters",
+    "homePropertyType":  "Property type",
+    "homeLocation":  "Location",
+    "homeSampleTitle":  "Sample {type}",
+    "@homeSampleTitle":  {
+                             "placeholders":  {
+                                                  "type":  {
+                                                               "type":  "String"
+                                                           }
+                                              }
+                         },
+    "homePrice":  "{price} EGP",
+    "@homePrice":  {
+                       "placeholders":  {
+                                            "price":  {
+                                                          "type":  "String"
+                                                      }
+                                        }
+                   },
+    "homeBeds":  "{count} beds",
+    "@homeBeds":  {
+                      "placeholders":  {
+                                           "count":  {
+                                                         "type":  "int"
+                                                     }
+                                       }
+                  },
+    "homeBaths":  "{count} baths",
+    "@homeBaths":  {
+                       "placeholders":  {
+                                            "count":  {
+                                                          "type":  "int"
+                                                      }
+                                        }
+                   },
+    "homeArea":  "{count} m²",
+    "@homeArea":  {
+                      "placeholders":  {
+                                           "count":  {
+                                                         "type":  "int"
+                                                     }
+                                       }
+                  },
+    "homeSave":  "Save property",
+    "homeUnsave":  "Remove from Favorites",
+    "homeMenu":  "Open navigation menu",
+    "homeLogout":  "Log out",
+    "homeLogoutError":  "Could not log out. Please try again.",
+    "homeLanguage":  "Language",
+    "homeViewAll":  "View all",
+    "homeAssistantTitle":  "AI Assistant",
+    "homeAssistantBannerDescription":  "Personalized guidance to find a place that feels like home.",
+    "homeResidential":  "Residential",
+    "homeCommercial":  "Commercial",
+    "homeForSale":  "For Sale",
+    "homeForRent":  "For Rent",
+    "homeResidentialSale":  "Residential for Sale",
+    "homeResidentialRent":  "Residential for Rent",
+    "homeCommercialSale":  "Commercial for Sale",
+    "homeCommercialRent":  "Commercial for Rent",
+    "homePredictorTitle":  "Price Predictor",
+    "homePreviewPage":  "Preview property {page} of {total}",
+    "@homePreviewPage":  {
+                             "placeholders":  {
+                                                  "page":  {
+                                                               "type":  "int"
+                                                           },
+                                                  "total":  {
+                                                                "type":  "int"
+                                                            }
+                                              }
+                         },
+    "aiSignIn":  "Please sign in again to continue.",
+    "aiInvalidInput":  "Check the entered values and try again.",
+    "aiUnavailable":  "This service is currently unavailable. Please try again later.",
+    "aiRateLimit":  "Too many requests. Please try again later.",
+    "aiAll":  "All",
+    "aiSpecifications":  "Property specifications",
+    "aiPredictSubtitle":  "Estimate property value in the Egyptian market",
+    "aiSize":  "Area (m²)",
+    "aiBedrooms":  "Bedrooms",
+    "aiBathrooms":  "Bathrooms",
+    "aiLatitude":  "Latitude (22–32)",
+    "aiLongitude":  "Longitude (24–38)",
+    "aiCoordinatesHelp":  "Enter the property\u0027s exact coordinates. Estimates depend on the location you provide.",
+    "aiCalculate":  "Calculate estimated price",
+    "aiReset":  "Value another property",
+    "aiEstimatedPrice":  "Estimated price",
+    "aiHeuristicRange":  "Indicative range, not a confidence interval",
+    "aiMonthly":  "EGP / month",
+    "aiCurrency":  "EGP",
+    "aiMinimumPrice":  "Minimum price (EGP)",
+    "aiMaximumPrice":  "Maximum price (EGP)",
+    "aiCity":  "City name (optional)",
+    "aiTypeOptional":  "Property type (optional)",
+    "aiRecommendationsSubtitle":  "Explore properties matching your preferences",
+    "aiLoadMore":  "Load more",
+    "aiSimilar":  "Similar properties",
+    "aiFound":  "Matching properties",
+    "aiChatSubtitle":  "Your smart property assistant",
+    "aiChatWelcome":  "Welcome! Tell me what kind of property you are looking for.",
+    "aiMessageHint":  "Ask about properties…",
+    "aiSend":  "Send",
+    "aiNewChat":  "New conversation",
+    "aiThinking":  "Preparing your response…",
+    "aiMissingPrice":  "Price not listed",
+    "aiRangeValidation":  "Enter a number in the allowed range.",
+    "aiPropertyType":  "Property type",
+    "aiCategory":  "Property category",
+    "propertyTypeApartment": "Apartment",
+    "propertyTypeBulkRentUnit": "Bulk Rent Unit",
+    "propertyTypeBulkSaleUnit": "Bulk Sale Unit",
+    "propertyTypeBungalow": "Bungalow",
+    "propertyTypeCabin": "Cabin",
+    "propertyTypeCafeteria": "Cafeteria",
+    "propertyTypeChalet": "Chalet",
+    "propertyTypeClinic": "Clinic",
+    "propertyTypeCoWorkingSpace": "Co-Working Space",
+    "propertyTypeDuplex": "Duplex",
+    "propertyTypeFactory": "Factory",
+    "propertyTypeFarm": "Farm",
+    "propertyTypeFullFloor": "Full Floor",
+    "propertyTypeHalfFloor": "Half Floor",
+    "propertyTypeHotelApartment": "Hotel Apartment",
+    "propertyTypeLand": "Land",
+    "propertyTypeMedicalFacility": "Medical Facility",
+    "propertyTypeOfficeSpace": "Office Space",
+    "propertyTypePalace": "Palace",
+    "propertyTypePenthouse": "Penthouse",
+    "propertyTypeRestaurant": "Restaurant",
+    "propertyTypeRetail": "Retail",
+    "propertyTypeRoof": "Roof",
+    "propertyTypeShop": "Shop",
+    "propertyTypeShowRoom": "Show Room",
+    "propertyTypeStaffAccommodation": "Staff Accommodation",
+    "propertyTypeTownhouse": "Townhouse",
+    "propertyTypeTwinHouse": "Twin House",
+    "propertyTypeVilla": "Villa",
+    "propertyTypeWarehouse": "Warehouse",
+    "propertyTypeWholeBuilding": "Whole Building",
+    "propertyTypeIVilla": "iVilla",
+    "propertyTypeOther": "Other property type",
+    "propertyDetails": "Property details",
+    "favoritesEmpty": "No saved properties yet.",
+    "favoritesUnavailable": "Saved properties are unavailable. Please try again.",
+    "featuredPage": "Property {page} of {count}",
+    "@featuredPage": {"placeholders": {"page": {"type": "int"}, "count": {"type": "int"}}}
+}

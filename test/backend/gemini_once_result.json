@@ -1,0 +1,17 @@
+{
+  "env_exists": true,
+  "key_matches_env_file": true,
+  "chat_enabled": true,
+  "configured_provider": "groq",
+  "selected_client": "GeminiClient",
+  "requested_model": "gemini-3.5-flash-lite",
+  "generation_requests": 1,
+  "actual_model": "gemini-3.5-flash-lite",
+  "response": "OK.",
+  "genuine_response": true,
+  "usage": {
+    "prompt_tokens": 14,
+    "candidates_tokens": 2,
+    "total_tokens": 16
+  }
+}
