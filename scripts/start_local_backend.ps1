@@ -5,9 +5,20 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+trap {
+    $diagnostic = 'Startup prerequisite/launcher failure: ' + $_.Exception.GetType().Name + '. See the error in this window and docs/BACKEND_STARTUP.md.'
+    $diagnostic | Add-Content -LiteralPath (Join-Path (Split-Path -Parent $PSScriptRoot) 'backend_startup.log')
+    Write-Host $diagnostic -ForegroundColor Red
+    break
+}
 $backend = Join-Path (Split-Path -Parent $PSScriptRoot) 'EGY_DEVELOPMENT_ai'
 $python = Join-Path $backend '.venv\Scripts\python.exe'
-$firebase = Join-Path $env:USERPROFILE 'firebase-secrets\egy-firebase-admin.json'
+if (-not (Test-Path -LiteralPath $python)) {
+    $alternate = Join-Path $backend 'venv\Scripts\python.exe'
+    if (Test-Path -LiteralPath $alternate) { $python = $alternate }
+    else { throw 'Backend virtual environment missing. See docs/BACKEND_STARTUP.md setup instructions.' }
+}
+$firebase = if ($env:GOOGLE_APPLICATION_CREDENTIALS) { $env:GOOGLE_APPLICATION_CREDENTIALS } else { Join-Path $env:USERPROFILE 'firebase-secrets\egy-firebase-admin.json' }
 $port = 8000
 
 $requiredFiles = @(
@@ -42,9 +53,7 @@ if ($env:FIREBASE_AUTH_EMULATOR_HOST) {
 $portInUse = [Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().
     GetActiveTcpListeners().Port -contains $port
 $healthUrl = "http://127.0.0.1:$port/api/health"
-if ($portInUse -and -not $CheckOnly) {
-    throw "TCP port $port is already in use. Check $healthUrl or stop the existing listener before starting."
-}
+# The runner identifies EGY via OpenAPI and component health before reusing a listener.
 
 $wifiUrls = @(
     foreach ($adapter in [Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces()) {
@@ -83,6 +92,7 @@ import sys
 try:
     import uvicorn
     import sklearn
+    import fastapi, pandas, pyarrow, scipy, xgboost, dotenv, firebase_admin
     from core.config import settings
     from core.auth import _admin_app
 
@@ -96,6 +106,8 @@ try:
     if admin.credential.get_credential().project_id != admin.project_id:
         sys.exit("Firebase service-account project does not match the FastAPI Firebase project.")
     print(f"Python {sys.version.split()[0]} | Firebase Admin: {admin.project_id} | Chat enabled: {settings.chat_enabled}")
+except ModuleNotFoundError as error:
+    sys.exit(f"Missing Python dependency: {error.name}. Use the venv pip install -r requirements.txt; see docs/BACKEND_STARTUP.md.")
 except Exception as error:
     sys.exit(f"Backend preflight failed ({type(error).__name__}). Check .venv, .env, and the Firebase service-account file.")
 '@
@@ -105,8 +117,8 @@ except Exception as error:
         if ($portInUse) { Write-Host "TCP port $port already has a listener. No server was started." }
         return
     }
-    Write-Host "Starting FastAPI on 0.0.0.0:$port. Press Ctrl+C to stop."
-    & $python -B -m uvicorn app:app --host 0.0.0.0 --port $port
+    Write-Host "Checking / starting FastAPI on 0.0.0.0:$port. Press Ctrl+C to stop."
+    & $python -B (Join-Path $PSScriptRoot 'backend_runner.py')
     if ($LASTEXITCODE -ne 0) { throw "Uvicorn exited with code $LASTEXITCODE." }
 } finally {
     foreach ($name in $previous.Keys) {
