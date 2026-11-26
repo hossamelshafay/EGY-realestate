@@ -44,20 +44,37 @@ Navigating the Egyptian real estate market requires comparing fragmented listing
 
 ### Animated Application Showcase
 
-Original high-resolution MP4 recordings demonstrating the core user journeys:
+Original high-resolution recordings demonstrating the core user journeys:
 
-1. **Splash Screen** — [Watch `splash.mp4`](assets/readme/gif/splash.mp4)
-   Custom-painted Cairo skyline construction, Nile and sun motion, and smooth transition into onboarding.
-2. **Onboarding Experience** — [Watch `Onboarding.mp4`](assets/readme/gif/Onboarding.mp4)
-   Gesture-driven vertical `PageView` transitions with continuous `PageController.page` interpolation and language selection.
-3. **Authentication Flow** — [Watch `auth.mp4`](assets/readme/gif/auth.mp4)
-   Asymmetric curved header morphing, two-step registration with avatar selection, and Lottie completion transition into Home.
-4. **Home Screen & Property Animations** — [Watch `home.mp4`](assets/readme/gif/home.mp4)
-   Convex navy header, category flip transitions, stacked featured property carousel, and AI tool shortcuts.
-5. **Search Experience** — [Watch `search.mp4`](assets/readme/gif/search.mp4)
-   Expanding search overlay with debounced backend queries, skeleton placeholders, and direct navigation to property details.
-6. **AI Chat Assistant** — [Watch `ai-chat.mp4`](assets/readme/gif/ai-chat.mp4)
-   Conversational property assistant with session management, typing indicators, and inline property recommendations.
+#### 1. Splash Screen
+Custom-painted Cairo skyline construction, Nile and sun motion, and smooth transition into onboarding.
+
+https://github.com/user-attachments/assets/42066020-c999-41cf-a7e1-cbec1f9f5d11
+
+#### 2. Onboarding
+Gesture-driven vertical `PageView` transitions with continuous `PageController.page` interpolation and language selection.
+
+https://github.com/user-attachments/assets/cc41fb6b-f6f0-421b-8f74-2f74fe0f7736
+
+#### 3. Authentication
+Asymmetric curved header morphing, two-step registration with avatar selection, and Lottie completion transition into Home.
+
+https://github.com/user-attachments/assets/6cb56687-8f77-486f-8a20-e77768a915fd
+
+#### 4. Home & Property Animations
+Convex navy header, category flip transitions, stacked featured property carousel, and AI tool shortcuts.
+
+https://github.com/user-attachments/assets/fda9dde7-d64a-4820-8ae6-d653c09ac100
+
+#### 5. Search Experience
+Expanding search overlay with debounced backend queries, skeleton placeholders, and direct navigation to property details.
+
+https://github.com/user-attachments/assets/f0cb3b82-e9b2-45ef-a6d4-1ab5b0cb1215
+
+#### 6. AI Chatbot
+Conversational property assistant with session management, typing indicators, and inline property recommendations.
+
+https://github.com/user-attachments/assets/f6c6b960-f557-4ba2-87f3-b47305105d2e
 
 ### Static Screenshot Gallery
 
