@@ -6,6 +6,20 @@
 
 ## Current implementation scope
 
+The owner approved app-wide Light/Dark/System appearance, a circular theme reveal,
+dark curved-boundary dividers, shared internal headers and a convex details image.
+Authentication, Splash and Onboarding geometry remains unchanged. Account and
+avatar functionality, backend changes and other platforms remain out of scope.
+
+The approved premium refinement covers Property Details, shared authenticated
+fade/slide motion, and orbiting accents on Recommendations/Favorites only.
+No backend, chat persistence, Settings, Avatar or Dark Mode work is included.
+
+Phase 1A.3 covers the staged Home entrance, directional category transitions,
+an image-led Property Details screen, and an animated Home search overlay.
+Search uses the existing catalog and recommendation endpoints. Phase 1B
+requires owner approval.
+
 UI/UX Phase 1A covers the authenticated reveal navigation, shared inward-curved
 internal header, and directional route transitions. The existing Home header and
 authentication handoffs remain the geometry and motion references. Review is

@@ -2,6 +2,19 @@
 
 > A phased plan for building the EGY DEVELOPMENT Flutter mobile application on top of the existing Python AI backend.
 
+**Phase 1A.3 cinematic Home, 2026-11-25.** Home stages its entrance and flips
+the Featured area between categories in the current reading direction. The
+stacked deck retains autoplay and prefetch. Search opens as a modal panel with
+a retained query, using catalog samples and the existing recommendation
+location and type filters. Property Details uses a shared image transition and
+renders available facts, amenities, and photos. The current catalog omits
+descriptions and contact information.
+
+Flutter analysis and 146 tests passed. The Android debug APK installed in place
+and retained sign-in. Home and Search were checked on-device, including keyboard
+and query retention. The phone could not reach the local catalog over Wi-Fi, so
+live-listing visual checks remain pending. Phase 1B requires owner approval.
+
 **Discovery and Favorites follow-up, 2026-11-23.** The catalog now powers
 Home, View All, and property details with canonical category filters. The
 first Favorites implementation uses UID-scoped Firestore rules and shared

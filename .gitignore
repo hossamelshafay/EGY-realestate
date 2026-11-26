@@ -45,6 +45,7 @@ app.*.map.json
 /android/app/release
 
 # Python Backend
+/backend_startup.lock
 **/.venv/
 **/venv/
 **/__pycache__/
@@ -72,3 +73,11 @@ app.*.map.json
 **/*.aab
 
 /EGY_DEVELOPMENT_ai/Front/
+
+# Local databases, backups, and IDE config
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.bak
+**/*.tmp
+.vscode/

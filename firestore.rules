@@ -2,6 +2,27 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /users/{uid} {
+      function ownsProfile() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function isValidProfile() {
+        let data = request.resource.data;
+        return data.keys().hasAll(['name', 'avatarId', 'updatedAt', 'schemaVersion'])
+          && data.keys().hasOnly(['name', 'avatarId', 'updatedAt', 'schemaVersion'])
+          && data.name is string
+          && data.name.size() >= 2
+          && data.name.size() <= 60
+          && data.avatarId in ['atlas', 'nile', 'cairo', 'lotus', 'noura', 'yasmin']
+          && data.updatedAt == request.time
+          && data.schemaVersion == 1;
+      }
+
+      allow read, delete: if ownsProfile();
+      allow create, update: if ownsProfile() && isValidProfile();
+    }
+
     match /users/{uid}/favorites/{favoriteId} {
       function ownsFavorites() {
         return request.auth != null && request.auth.uid == uid;

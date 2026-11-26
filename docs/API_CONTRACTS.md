@@ -1,4 +1,4 @@
-﻿# Current AI API contracts
+# Current AI API contracts
 
 Source contract updated 2026-11-22. Prediction and recommendation search/similar
 passed in-process HTTP tests with real artifacts and a test-only Firebase override.
@@ -126,15 +126,28 @@ not certify recommendation readiness.
 
 Repository -> Datasource -> Dio ApiClient. Token obtained from current Firebase
 user for each request. No tokens logged/persisted. Explicit API_BASE_URL required;
-release HTTPS enforced. Connect timeout 10s; prediction send/receive timeout 30s.
+release HTTPS enforced. Native Android debug builds can use explicit IPv4
+loopback and a port with ADB reverse. Connect timeout is 10s and prediction
+send/receive timeout is 30s.
 Chat send/receive timeout is 60s; other model requests use 30s.
-Redirects disabled. API errors map to Failure types. Prediction datasource rejects
-malformed responses rather than inventing values. Form/result UI is still pending
-device validation; existing route remains a placeholder. Recommendation search
-and similar-listing repositories and a disabled chat repository are registered
-manually in get_it. Their datasources validate responses and return domain
-entities. ChatRepositoryImpl defaults to disabled and makes no HTTP request;
-provider approval and server UID ownership are required before enabling it.
+Redirects disabled. API errors map to Failure types.
+
+For a physical Android phone connected by USB, use the healthy backend on the
+host and run:
+
+```powershell
+adb reverse tcp:8000 tcp:8000
+flutter run --debug --dart-define=API_BASE_URL=http://127.0.0.1:8000 --dart-define=ENABLE_LIVE_CHAT=true
+```
+
+Add `--dart-define=API_DEBUG_LOGS=true` to log HTTP methods, route patterns,
+and statuses or transport error types. Diagnostics omit tokens, listing IDs,
+query parameters, and request and response bodies.
+
+The prediction, recommendation, and chat datasources validate responses and
+return domain entities. Their repositories and the shared API client are
+registered manually in get_it. `ChatRepositoryImpl` defaults to disabled and
+makes no HTTP request unless `ENABLE_LIVE_CHAT=true`.
 
 The legacy backend Front/ demo has no authenticated token flow and still contains
 unverified display claims. It is not an integrated client of this contract.
