@@ -22,7 +22,9 @@ class AuthResultCache {
         // Failed loads may retry on the next attempt; never strand navigation.
         unawaited(
           future.then<void>(
-            (composition) { _ready[asset] = composition; },
+            (composition) {
+              _ready[asset] = composition;
+            },
             onError: (Object error, StackTrace stack) {
               _entries.remove(asset);
             },

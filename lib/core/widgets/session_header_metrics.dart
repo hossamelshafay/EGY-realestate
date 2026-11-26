@@ -58,14 +58,17 @@ class SessionHeaderMetrics {
     bannerTop =
         top +
         64 +
-        measure(welcome, theme.headlineMedium, width - 96, maxLines: 2) +
+        math.max(
+          48.0,
+          measure(welcome, theme.headlineMedium, width - 136, maxLines: 2),
+        ) +
         4 +
         measure(l.homeMember, theme.bodySmall, width - 48) +
         12;
-    // Reserve measured text/robot extent, padding, and convex corner clearance.
+    // Reserve measured text/robot extent, CTA pill, padding, and corner clearance.
     final bannerTextWidth = math.max(
       1.0,
-      width - 32 - 24 - 48 - 8 - 51 - 8 - 2,
+      width - 32 - 30 - 56 - 10 - 2,
     );
     final bannerTextHeight =
         measure(
@@ -76,10 +79,18 @@ class SessionHeaderMetrics {
         4 +
         measure(
           l.homeAssistantBannerDescription,
-          theme.bodySmall?.copyWith(fontSize: 11),
+          theme.bodySmall?.copyWith(fontSize: 11.5),
           bannerTextWidth,
         );
-    bannerHeight = math.max(75.0, bannerTextHeight) + 26;
+    final ctaHeight =
+        measure(
+          l.homeAssistantCta,
+          theme.labelMedium,
+          bannerTextWidth,
+          maxLines: 1,
+        ) +
+        14;
+    bannerHeight = math.max(88.0, bannerTextHeight + ctaHeight + 8) + 26;
     final settledHome = bannerTop + bannerHeight + 24;
     height = lerpDouble(
       lerpDouble(auth, viewport.height, motion.cover.value),

@@ -2,9 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:egy/app/di/injection.dart';
+import 'package:egy/app/theme/app_colors.dart';
 import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/core/widgets/authenticated_scaffold.dart';
 import 'package:egy/core/widgets/content_fade.dart';
+import 'package:egy/core/widgets/skeleton/app_skeleton.dart';
 import 'package:egy/features/properties/presentation/widgets/listing_card.dart';
 
 import '../cubit/favorites_cubit.dart';
@@ -30,8 +32,9 @@ class FavoritesPage extends StatelessWidget {
                   : null,
             )),
             child: switch (state) {
-              FavoritesLoading() => const Center(
-                child: CircularProgressIndicator(),
+              FavoritesLoading() => const SingleChildScrollView(
+                padding: EdgeInsets.all(24),
+                child: SkeletonListingList(count: 3),
               ),
               FavoritesError() => Center(
                 child: Column(
@@ -52,8 +55,10 @@ class FavoritesPage extends StatelessWidget {
                         key: const PageStorageKey('favorites_list'),
                         padding: const EdgeInsets.all(24),
                         itemCount: items.length,
-                        itemBuilder: (context, index) =>
-                            ListingCard(property: items[index]),
+                        itemBuilder: (context, index) => ListingCard(
+                          property: items[index],
+                          borderGlow: AppColors.primaryGold,
+                        ),
                       ),
             },
           ),

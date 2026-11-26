@@ -4,6 +4,7 @@ import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/core/widgets/primary_button.dart';
 import 'package:egy/core/widgets/ai/ai_labels.dart';
 import 'package:egy/core/widgets/ai/ai_feedback.dart';
+import 'package:egy/core/widgets/skeleton/app_skeleton.dart';
 import 'package:egy/features/properties/presentation/property_type_label.dart';
 import '../../domain/entities/prediction.dart';
 import '../cubit/prediction_cubit.dart';
@@ -117,7 +118,8 @@ class _PredictionFormState extends State<PredictionForm> {
               isLoading: state.submitting,
               onPressed: _submit,
             ),
-            if (state.result != null) ...[
+            if (state.submitting) const SkeletonPredictionResult(),
+            if (!state.submitting && state.result != null) ...[
               const SizedBox(height: 24),
               PredictionResult(result: state.result!),
               TextButton(

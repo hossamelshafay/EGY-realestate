@@ -52,7 +52,7 @@ class AuthShell extends StatelessWidget {
     }
 
     return HandoffSurface(
-      color: AppColors.white,
+      color: Theme.of(context).colorScheme.surface,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         body: SingleChildScrollView(
@@ -76,7 +76,7 @@ class AuthShell extends StatelessWidget {
                   key: const Key('auth_form_panel'),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.white.withValues(
+                    color: Theme.of(context).colorScheme.surface.withValues(
                       alpha: _panelProgress(context),
                     ),
                     borderRadius: const BorderRadius.vertical(

@@ -36,18 +36,32 @@ abstract final class AppMotion {
   }) {
     final duration = MediaQuery.disableAnimationsOf(context)
         ? Duration.zero
-        : const Duration(milliseconds: 400);
+        : const Duration(milliseconds: 500);
     return CustomTransitionPage<void>(
       key: key,
       child: child,
       transitionDuration: duration,
-      reverseTransitionDuration: duration,
+      reverseTransitionDuration: MediaQuery.disableAnimationsOf(context)
+          ? Duration.zero
+          : const Duration(milliseconds: 420),
       transitionsBuilder: (context, animation, _, child) {
         if (MediaQuery.disableAnimationsOf(context)) return child;
         return FadeTransition(
           key: const Key('authenticated_route_fade'),
           opacity: animation.drive(CurveTween(curve: Curves.easeInOut)),
-          child: child,
+          child: SlideTransition(
+            key: const Key('authenticated_route_slide'),
+            position: animation.drive(
+              Tween<Offset>(
+                begin: Offset(
+                  Directionality.of(context) == TextDirection.rtl ? -.08 : .08,
+                  0,
+                ),
+                end: Offset.zero,
+              ).chain(CurveTween(curve: Curves.easeOutCubic)),
+            ),
+            child: child,
+          ),
         );
       },
     );

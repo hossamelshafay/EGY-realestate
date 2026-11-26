@@ -9,6 +9,7 @@ import 'package:egy/core/widgets/ai/ai_feedback.dart';
 import 'package:egy/core/widgets/content_fade.dart';
 import 'package:egy/features/properties/presentation/widgets/listing_card.dart';
 import '../cubit/chat_cubit.dart';
+import '../widgets/chat_typing_indicator.dart';
 
 /// Opening this screen never makes a provider request.
 class ChatPage extends StatefulWidget {
@@ -100,7 +101,7 @@ class _ChatPageState extends State<ChatPage> {
                                 decoration: BoxDecoration(
                                   color: message.isUser
                                       ? AppColors.primaryNavy
-                                      : AppColors.inputFill,
+                                      : Theme.of(context).colorScheme.surfaceContainerHighest,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: SelectableText(
@@ -109,7 +110,7 @@ class _ChatPageState extends State<ChatPage> {
                                       ?.copyWith(
                                         color: message.isUser
                                             ? AppColors.white
-                                            : AppColors.primaryNavy,
+                                            : Theme.of(context).colorScheme.onSurface,
                                       ),
                                 ),
                               ),
@@ -142,11 +143,7 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                         ],
                       ),
-                    if (ready.sending)
-                      Semantics(
-                        label: l.aiThinking,
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
+                    if (ready.sending) ChatTypingIndicator(label: l.aiThinking),
                     if (ready.failure != null)
                       AiFeedback(failure: ready.failure!, onRetry: cubit.retry),
                   ],
@@ -160,7 +157,7 @@ class _ChatPageState extends State<ChatPage> {
                       child: TextField(
                         key: const Key('chat_input'),
                         controller: _text,
-                        enabled: !ready.sending,
+                        enabled: !ready.sending && !ready.loading,
                         maxLength: 4000,
                         minLines: 1,
                         maxLines: 4,
@@ -176,7 +173,7 @@ class _ChatPageState extends State<ChatPage> {
                     IconButton.filled(
                       key: const Key('chat_send'),
                       tooltip: l.aiSend,
-                      onPressed: ready.sending ? null : _send,
+                      onPressed: ready.sending || ready.loading ? null : _send,
                       style: IconButton.styleFrom(
                         backgroundColor: AppColors.primaryGold,
                       ),

@@ -27,5 +27,5 @@ abstract final class AiDestination {
     child: RecommendationsPage(similarTo: similarTo),
   );
   static Widget chat() =>
-      BlocProvider(create: (_) => sl<ChatCubit>(), child: const ChatPage());
+      BlocProvider.value(value: sl<ChatCubit>(), child: const ChatPage());
 }

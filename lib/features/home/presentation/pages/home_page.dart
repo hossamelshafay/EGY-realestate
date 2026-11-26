@@ -68,9 +68,9 @@ class _HomeSections extends StatelessWidget {
                 children: [
                   HomeStage(stage: 1, child: HomeDiscovery()),
                   SizedBox(height: 20),
-                  HomeStage(stage: 2, child: HomeFeaturedCarousel()),
+                  HomeFeaturedCarousel(),
                   SizedBox(height: 16),
-                  HomeStage(stage: 3, child: HomeAiTools()),
+                  HomeStage(stage: 4, child: HomeAiTools()),
                 ],
               ),
             ),

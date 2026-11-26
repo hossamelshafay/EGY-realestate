@@ -50,7 +50,7 @@ void main() {
       await tester.enterText(find.byKey(const Key('chat_input')), 'Hello');
       await tester.tap(find.byKey(const Key('chat_send')));
       await tester.pump();
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byKey(const Key('chat_typing_indicator')), findsOneWidget);
       pending.completeError(const ServerFailure('offline', statusCode: 503));
       await tester.pumpAndSettle();
       expect(find.text(l.aiUnavailable), findsOneWidget);

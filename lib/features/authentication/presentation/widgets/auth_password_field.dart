@@ -1,7 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:egy/app/localization/generated/app_localizations.dart';
-import 'package:egy/app/theme/app_colors.dart';
 
 /// Form controllers stay in the persistent form State across auth intent changes.
 class AuthPasswordField extends StatelessWidget {
@@ -25,9 +24,9 @@ class AuthPasswordField extends StatelessWidget {
       controller: controller,
       obscureText: hidden,
       textAlign: TextAlign.start,
-      style: Theme.of(
-        context,
-      ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       autofillHints: [
         register ? AutofillHints.newPassword : AutofillHints.password,
       ],

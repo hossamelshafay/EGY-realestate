@@ -126,6 +126,9 @@ void main() {
 
         await tester.tap(homeMenu);
         await tester.pumpAndSettle();
+        await tester.scrollUntilVisible(find.byKey(const ValueKey('reveal_settings')), 120,
+          scrollable: find.descendant(of: find.byKey(const Key('reveal_menu')),
+            matching: find.byType(Scrollable)).first);
         await tester.tap(find.byKey(const ValueKey('reveal_settings')));
         await tester.pump();
         if (!reduced) {
@@ -142,7 +145,7 @@ void main() {
             findsNothing,
           );
         } else {
-          expect(tester.getTopLeft(internalHeader).dx, 0);
+          expect(tester.getTopLeft(internalHeader).dx * sign, greaterThan(0));
           final motion = tester.widget<FadeTransition>(
             find.byKey(const Key('authenticated_route_fade')),
           );
@@ -185,7 +188,7 @@ void main() {
         await tester.pump();
         if (!reduced) {
           await tester.pump(const Duration(milliseconds: 65));
-          expect(tester.getTopLeft(internalHeader).dx, 0);
+          expect(tester.getTopLeft(internalHeader).dx * sign, greaterThan(0));
           final motion = tester.widget<FadeTransition>(
             find.byKey(const Key('authenticated_route_fade')),
           );

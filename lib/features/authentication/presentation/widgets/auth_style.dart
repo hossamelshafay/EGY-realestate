@@ -26,7 +26,9 @@ class AuthStyle extends StatelessWidget {
           labelStyle: theme.textTheme.bodyMedium,
           hintStyle: theme.textTheme.bodyMedium,
           filled: true,
-          fillColor: AppColors.offWhite,
+          fillColor: theme.brightness == Brightness.dark
+              ? theme.colorScheme.surfaceContainerHighest
+              : AppColors.offWhite,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 16,

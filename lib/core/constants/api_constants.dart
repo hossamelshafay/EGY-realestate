@@ -6,10 +6,9 @@
 /// flutter run --dart-define=API_BASE_URL=https://your-backend.example.com
 /// ```
 ///
-/// ⚠️  NEVER hard-code a URL in production.
-/// ⚠️  `localhost` / `127.0.0.1` is NOT reachable on a physical device.
-///     Android emulator loopback: 10.0.2.2
-///     Physical device: host LAN IP or deployed HTTPS URL.
+/// A physical Android debug build can use explicit IPv4 loopback with
+/// `adb reverse`. Otherwise use the host LAN IP, emulator host address, or
+/// a deployed HTTPS URL as appropriate.
 abstract final class ApiConstants {
   /// Explicit deployment/device address; an empty value disables API requests.
   static const String baseUrl = String.fromEnvironment('API_BASE_URL');

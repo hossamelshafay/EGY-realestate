@@ -101,7 +101,7 @@ class OnboardingSlide extends StatelessWidget {
                           title,
                           textAlign: TextAlign.center,
                           style: text.headlineLarge?.copyWith(
-                            color: AppColors.primaryNavy,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

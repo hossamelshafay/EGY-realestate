@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:egy/app/theme/app_colors.dart';
 
 import 'splash_sun_motion.dart';
 import 'package:egy/app/router/screen_handoff.dart';
@@ -22,7 +23,14 @@ import 'package:egy/app/router/screen_handoff.dart';
 ///
 /// This is a pure [CustomPainter] — no dependency on the widget tree.
 class CairoSkylinePainter extends CustomPainter {
-  CairoSkylinePainter(this.clock, this.reduced, {this.handoff});
+  CairoSkylinePainter(
+    this.clock,
+    this.reduced, {
+    this.handoff,
+    this.dark = false,
+  });
+  final bool dark;
+  Color get _navy => dark ? AppColors.darkMuted : navy;
   final ScreenHandoff? handoff;
   double _exit(int stage) =>
       reduced ? 0 : HandoffTiming.leave(handoff?.value ?? 0, stage);
@@ -250,7 +258,7 @@ class CairoSkylinePainter extends CustomPainter {
         i.rect(-7, -78, 14, 7, navy);
         i.rect(-8, -77, 16, 2, gold);
         i.rect(-4, -81, 8, 3, slate);
-        i.line(0, -81, 0, -94, navy, 1.3);
+        i.line(0, -81, 0, -94, _navy, 1.3);
       case _Shape.mosque:
         i.rect(-24, -15, 48, 15, navy);
         i.path(
@@ -261,7 +269,7 @@ class CairoSkylinePainter extends CustomPainter {
             ..quadraticBezierTo(2, -31, 6, -29)
             ..quadraticBezierTo(15, -25, 15, -15)
             ..close(),
-          navy,
+          _navy,
         );
         i.line(0, -34, 0, -40, gold, 1);
         for (final x in [-21.0, 21.0]) {
@@ -273,7 +281,7 @@ class CairoSkylinePainter extends CustomPainter {
               ..lineTo(x, -44)
               ..lineTo(x + 2, -35)
               ..close(),
-            navy,
+            _navy,
           );
         }
         for (final x in [-10.0, 0.0, 10.0]) {
@@ -296,7 +304,7 @@ class CairoSkylinePainter extends CustomPainter {
           _ => 34.0,
         };
         i.rect(-13, -h, 26, h, slate);
-        i.rect(7, -h, 6, h, navy, .45);
+        i.rect(7, -h, 6, h, _navy, .45);
         i.rect(-10, -h - 3, 17, 3, mist);
         for (var y = -h + 5; y < -2; y += 7) {
           for (var x = -9.0; x < 6; x += 6) {
@@ -325,7 +333,10 @@ class CairoSkylinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CairoSkylinePainter old) =>
-      old.clock != clock || old.reduced != reduced || old.handoff != handoff;
+      old.clock != clock ||
+      old.reduced != reduced ||
+      old.handoff != handoff ||
+      old.dark != dark;
 }
 
 // ── Top-level interpolation helpers ──────────────────────────────────────────

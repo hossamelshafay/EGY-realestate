@@ -40,7 +40,9 @@ void main() {
       find.byKey(const Key('auth_confirm_password')),
       'different',
     );
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('auth_submit')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('auth_submit')));
     await tester.pump();
     expect(find.text('Passwords do not match.'), findsOneWidget);

@@ -32,11 +32,11 @@ class SecondaryButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.primaryNavy,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
           disabledForegroundColor: AppColors.textTertiary,
           side: BorderSide(
             color: onPressed != null
-                ? AppColors.primaryNavy
+                ? Theme.of(context).colorScheme.onSurface
                 : AppColors.borderLight,
             width: 1.5,
           ),
@@ -45,11 +45,11 @@ class SecondaryButton extends StatelessWidget {
           ),
         ),
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: AppColors.primaryNavy,
+                  color: Theme.of(context).colorScheme.onSurface,
                   strokeWidth: 2,
                 ),
               )
@@ -57,7 +57,7 @@ class SecondaryButton extends StatelessWidget {
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: onPressed != null
-                      ? AppColors.primaryNavy
+                      ? Theme.of(context).colorScheme.onSurface
                       : AppColors.textTertiary,
                 ),
               ),

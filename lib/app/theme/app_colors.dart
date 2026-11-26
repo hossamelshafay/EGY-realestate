@@ -6,6 +6,17 @@ import 'package:material_ui/material_ui.dart';
 /// All values are derived from the approved design references in
 /// `docs/design_references/`.
 abstract final class AppColors {
+  static const avatarSkinLight = Color(0xFFF2CBA8);
+  static const avatarSkinMedium = Color(0xFFD4A078);
+  static const avatarSkinDeep = Color(0xFF9C684C);
+  static const avatarRose = Color(0xFF9B5967);
+  static const avatarTeal = Color(0xFF397F82);
+  static const darkCanvas = Color(0xFF101820);
+  static const darkSurface = Color(0xFF18232E);
+  static const darkInput = Color(0xFF22313F);
+  static const darkOutline = Color(0xFF526170);
+  static const darkText = Color(0xFFF0F2F5);
+  static const darkMuted = Color(0xFFB9C4CE);
   static const Color transparent = Color(0x00000000);
   // ── Primary palette ────────────────────────────────────────────────────────
   static const Color primaryNavy = Color(0xFF031A2D);

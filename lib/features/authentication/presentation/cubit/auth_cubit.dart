@@ -75,12 +75,21 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn(String email, String password) => _run(() async {
     await repository.signIn(email.trim(), password);
   });
-  Future<void> register(String name, String email, String password) =>
-      _run(() async {
-        await repository.register(name.trim(), email.trim(), password);
-      });
-  Future<void> google() => _run(() async {
-    await repository.signInWithGoogle();
+  Future<void> register(
+    String name,
+    String email,
+    String password, {
+    String? avatarId,
+  }) => _run(() async {
+    await repository.register(
+      name.trim(),
+      email.trim(),
+      password,
+      avatarId: avatarId,
+    );
+  });
+  Future<void> google({String? avatarId}) => _run(() async {
+    await repository.signInWithGoogle(avatarId: avatarId);
   });
   Future<void> resetPassword(String email) =>
       _run(() => repository.resetPassword(email.trim()), reset: true);

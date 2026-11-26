@@ -19,28 +19,36 @@ class AuthResultAnimation extends StatelessWidget {
         : AuthResultCache.failure;
     Widget player(LottieComposition composition) {
       motion.playResult(composition.duration);
-      return Lottie(composition: composition, key: ValueKey(asset),
-        controller: motion.result, repeat: false, frameRate: FrameRate.composition);
+      return Lottie(
+        composition: composition,
+        key: ValueKey(asset),
+        controller: motion.result,
+        repeat: false,
+        frameRate: FrameRate.composition,
+      );
     }
+
     final cached = AuthResultCache.instance.ready(asset);
     return Center(
       child: RepaintBoundary(
         child: SizedBox(
           width: 220,
           height: 220,
-          child: cached != null ? player(cached) : FutureBuilder<LottieComposition>(
-            key: ValueKey('composition:$asset'),
-            future: AuthResultCache.instance.composition(asset),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                motion.resultUnavailable();
-                return const SizedBox.shrink();
-              }
-              final composition = snapshot.data;
-              if (composition == null) return const SizedBox.shrink();
-              return player(composition);
-            },
-          ),
+          child: cached != null
+              ? player(cached)
+              : FutureBuilder<LottieComposition>(
+                  key: ValueKey('composition:$asset'),
+                  future: AuthResultCache.instance.composition(asset),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      motion.resultUnavailable();
+                      return const SizedBox.shrink();
+                    }
+                    final composition = snapshot.data;
+                    if (composition == null) return const SizedBox.shrink();
+                    return player(composition);
+                  },
+                ),
         ),
       ),
     );

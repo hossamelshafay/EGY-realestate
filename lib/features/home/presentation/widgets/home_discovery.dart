@@ -1,60 +1,66 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/app/theme/app_colors.dart';
+
 import '../cubit/home_cubit.dart';
 import 'home_categories.dart';
 import 'home_filters_sheet.dart';
 import 'home_palette.dart';
+import 'home_search_route.dart';
 
-/// Rounded search and the reference's four compact category cards.
+/// Search entry point and compact category filters.
 class HomeDiscovery extends StatelessWidget {
   const HomeDiscovery({super.key});
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(24),
-      borderSide: BorderSide.none,
-    );
+    final query = context.select((HomeCubit cubit) => cubit.state.query);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
             Expanded(
-              child: TextField(
-                key: const Key('home_search'),
-                onChanged: context.read<HomeCubit>().search,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: HomePalette.ink(context),
-                ),
-                textInputAction: TextInputAction.search,
-                decoration: InputDecoration(
-                  hintText: l.homeSearchHint,
-                  hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: HomePalette.muted(context),
-                  ),
-                  fillColor: HomePalette.fill(context),
-                  filled: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 18,
-                  ),
-                  border: border,
-                  enabledBorder: border,
-                  focusedBorder: border.copyWith(
-                    borderSide: const BorderSide(color: AppColors.primaryGold),
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.search_rounded,
-                    color: AppColors.primaryGold,
+              child: Builder(
+                builder: (anchor) => Material(
+                  color: HomePalette.fill(context),
+                  borderRadius: BorderRadius.circular(24),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    key: const Key('home_search'),
+                    onTap: () => HomeSearchRoute.open(anchor),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 56),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.search_rounded,
+                              color: AppColors.primaryGold,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                query.isEmpty ? l.homeSearchHint : query,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: HomePalette.ink(context)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             SizedBox(
               width: 52,
               height: 56,

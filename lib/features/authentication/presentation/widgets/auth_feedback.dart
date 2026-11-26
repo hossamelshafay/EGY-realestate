@@ -12,6 +12,7 @@ String authErrorMessage(AppLocalizations l, String code) => switch (code) {
   'wrong-password' ||
   'user-not-found' => l.invalidCredentials,
   'email-already-in-use' => l.emailInUse,
+  'profile-save-partial' => l.authProfilePartial,
   'network-request-failed' => l.authNetwork,
   'cancelled' => l.authCancelled,
   _ => l.authGeneric,

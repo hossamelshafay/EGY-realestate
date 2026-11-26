@@ -4,6 +4,7 @@ import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/core/widgets/authenticated_scaffold.dart';
 import 'package:egy/core/widgets/ai/ai_feedback.dart';
 import 'package:egy/core/widgets/content_fade.dart';
+import 'package:egy/core/widgets/skeleton/app_skeleton.dart';
 import '../cubit/prediction_cubit.dart';
 import '../widgets/prediction_form.dart';
 
@@ -24,7 +25,7 @@ class PredictionPage extends StatelessWidget {
               failure: failure,
               onRetry: context.read<PredictionCubit>().load,
             ),
-            _ => const Center(child: CircularProgressIndicator()),
+            _ => const SkeletonPredictionForm(),
           },
         ),
       ),

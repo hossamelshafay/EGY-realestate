@@ -1,4 +1,5 @@
 import 'package:egy/core/widgets/safe_animated_size.dart';
+import 'package:egy/features/profile/domain/entities/avatar_catalog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ import 'package:egy/core/widgets/session_page.dart';
 import 'package:egy/core/widgets/session_morph_scope.dart';
 import '../cubit/auth_cubit.dart';
 import '../widgets/auth_style.dart';
-import '../widgets/google_logo.dart';
+import '../widgets/auth_social_actions.dart';
 import '../widgets/auth_shell.dart';
 import '../widgets/auth_entrance.dart';
 import '../widgets/auth_language_selector.dart';
@@ -19,6 +20,7 @@ import '../widgets/auth_action_button.dart';
 import '../widgets/auth_motion_scope.dart';
 import '../widgets/auth_feedback.dart';
 import '../widgets/auth_password_field.dart';
+import '../widgets/signup_avatar_step.dart';
 import 'auth_page_mode.dart';
 
 export 'auth_page_mode.dart';
@@ -63,6 +65,8 @@ class _AuthFormState extends State<_AuthForm>
   }
 
   final _form = GlobalKey<FormState>();
+  String? _avatar;
+  int _registerStep = 0;
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -92,6 +96,7 @@ class _AuthFormState extends State<_AuthForm>
       // Preserve all entered fields while the shared shell folds between intents.
       _hidePassword = true;
       _hideConfirm = true;
+      _registerStep = 0;
       if (AuthMotionScope.read(context) != null ||
           MediaQuery.disableAnimationsOf(context)) {
         _transition.value = 1;
@@ -101,6 +106,10 @@ class _AuthFormState extends State<_AuthForm>
     }
   }
 
+  void _google() {
+    context.read<AuthCubit>().google(avatarId: _avatar);
+  }
+
   void _submit() {
     if (!_form.currentState!.validate()) return;
     final cubit = context.read<AuthCubit>();
@@ -108,10 +117,22 @@ class _AuthFormState extends State<_AuthForm>
       case AuthPageMode.login:
         cubit.signIn(_email.text, _password.text);
       case AuthPageMode.register:
-        cubit.register(_name.text, _email.text, _password.text);
+        setState(() {
+          _avatar ??= AvatarCatalog.ids.first;
+          _registerStep = 1;
+        });
       case AuthPageMode.reset:
         cubit.resetPassword(_email.text);
     }
+  }
+
+  void _createAccount() {
+    context.read<AuthCubit>().register(
+      _name.text,
+      _email.text,
+      _password.text,
+      avatarId: _avatar ?? AvatarCatalog.ids.first,
+    );
   }
 
   @override
@@ -142,187 +163,223 @@ class _AuthFormState extends State<_AuthForm>
       },
       builder: (context, state) {
         final loading = state is AuthLoading;
-        return AuthShell(
-          title: title,
-          subtitle: reset
-              ? l.authResetDescription
-              : register
-              ? l.authJoin
-              : l.authWelcome,
-          compact: register,
-          child: SafeAnimatedSize(
-            duration: Duration(
-              milliseconds:
-                  AuthMotionScope.read(context) != null ||
-                      MediaQuery.disableAnimationsOf(context)
-                  ? 0
-                  : 450,
-            ),
-            curve: Curves.easeInOutCubic,
-            alignment: Alignment.topCenter,
-            child: FadeTransition(
-              opacity: _transition,
-              child: SlideTransition(
-                position: Tween(begin: const Offset(0, .025), end: Offset.zero)
-                    .animate(
-                      CurvedAnimation(
-                        parent: _transition,
-                        curve: Curves.easeOutCubic,
-                      ),
-                    ),
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.onState != null) const AuthInlineError(),
-                      if (register) ...[
-                        _field(
-                          TextFormField(
-                            key: const Key('auth_name'),
-                            controller: _name,
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.textPrimary),
-                            autofillHints: const [AutofillHints.name],
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              labelText: l.fullName,
-                              prefixIcon: const Icon(Icons.person_outline),
-                            ),
-                            validator: (v) => (v?.trim().isEmpty ?? true)
-                                ? l.requiredField
-                                : null,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                      _field(
-                        TextFormField(
-                          key: const Key('auth_email'),
-                          controller: _email,
-                          textDirection: TextDirection.ltr,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: AppColors.textPrimary),
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: const [AutofillHints.email],
-                          decoration: InputDecoration(
-                            labelText: l.email,
-                            prefixIcon: const Icon(Icons.mail_outline),
-                          ),
-                          validator: (v) =>
-                              !RegExp(
-                                r'^[^\s@]+@[^\s@]+\.[^\s@]+$',
-                              ).hasMatch(v?.trim() ?? '')
-                              ? l.invalidEmail
-                              : null,
+        final isStep2 = register && _registerStep == 1;
+        final reduced = MediaQuery.disableAnimationsOf(context);
+        final isRtl = Directionality.of(context) == TextDirection.rtl;
+        return PopScope(
+          canPop: !isStep2 || loading,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop && isStep2 && !loading) {
+              setState(() => _registerStep = 0);
+            }
+          },
+          child: AuthShell(
+            title: title,
+            subtitle: reset
+                ? l.authResetDescription
+                : register
+                ? l.authJoin
+                : l.authWelcome,
+            compact: register,
+            child: SafeAnimatedSize(
+              duration: Duration(
+                milliseconds:
+                    AuthMotionScope.read(context) != null || reduced ? 0 : 450,
+              ),
+              curve: Curves.easeInOutCubic,
+              alignment: Alignment.topCenter,
+              child: FadeTransition(
+                opacity: _transition,
+                child: SlideTransition(
+                  position: Tween(begin: const Offset(0, .025), end: Offset.zero)
+                      .animate(
+                        CurvedAnimation(
+                          parent: _transition,
+                          curve: Curves.easeOutCubic,
                         ),
                       ),
-                      if (!reset) ...[
-                        const SizedBox(height: 16),
-                        _passwordField(false),
-                        if (register) ...[
-                          const SizedBox(height: 16),
-                          _passwordField(true),
-                        ],
-                      ],
-                      if (!register && !reset)
-                        AuthEntranceStage(
-                          exitOnHome: true,
-                          stage: 7,
-                          child: Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: TextButton(
-                              onPressed: loading
-                                  ? null
-                                  : () => context.goNamed(
-                                      RouteNames.forgotPassword,
+                  child: AnimatedSwitcher(
+                    duration: reduced
+                        ? Duration.zero
+                        : const Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    transitionBuilder: (child, animation) {
+                      final offset = isStep2
+                          ? Offset(isRtl ? -0.08 : 0.08, 0)
+                          : Offset(isRtl ? 0.08 : -0.08, 0);
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween(
+                            begin: offset,
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: isStep2
+                        ? SignupAvatarStep(
+                            key: const ValueKey('register_step_2'),
+                            selectedAvatar: _avatar ?? AvatarCatalog.ids.first,
+                            loading: loading,
+                            showInlineError: widget.onState != null,
+                            onBack: () => setState(() => _registerStep = 0),
+                            onSelect: (id) => setState(() => _avatar = id),
+                            onCreateAccount: _createAccount,
+                          )
+                        : Form(
+                            key: _form,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (widget.onState != null)
+                                  const AuthInlineError(),
+                                if (register) ...[
+                                  _field(
+                                    TextFormField(
+                                      key: const Key('auth_name'),
+                                      controller: _name,
+                                      textAlign: TextAlign.start,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
+                                          ),
+                                      autofillHints: const [AutofillHints.name],
+                                      textCapitalization:
+                                          TextCapitalization.words,
+                                      decoration: InputDecoration(
+                                        labelText: l.fullName,
+                                        prefixIcon: const Icon(
+                                          Icons.person_outline,
+                                        ),
+                                      ),
+                                      validator: (v) =>
+                                          (v?.trim().isEmpty ?? true)
+                                          ? l.requiredField
+                                          : null,
                                     ),
-                              child: Text(l.forgotPassword),
-                            ),
-                          ),
-                        ),
-                      const SizedBox(height: 20),
-                      AuthEntranceStage(
-                        stage: 7,
-                        child: AuthActionButton(
-                          label: reset ? l.sendReset : title,
-                          loading: loading,
-                          onPressed: _submit,
-                        ),
-                      ),
-                      if (!reset) ...[
-                        const SizedBox(height: 24),
-                        AuthEntranceStage(
-                          stage: 7,
-                          child: Row(
-                            children: [
-                              const Expanded(child: Divider()),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                child: Text(
-                                  l.orContinue,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                              const Expanded(child: Divider()),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        AuthEntranceStage(
-                          stage: 8,
-                          child: OutlinedButton.icon(
-                            key: const Key('auth_google'),
-                            onPressed: loading
-                                ? null
-                                : () => context.read<AuthCubit>().google(),
-                            icon: const GoogleLogo(),
-                            label: Text(l.continueGoogle),
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(52),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 20),
-                      AuthEntranceStage(
-                        stage: 9,
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            if (!reset)
-                              Text(register ? l.haveAccount : l.noAccount),
-                            TextButton(
-                              onPressed: loading
-                                  ? null
-                                  : () => context.goNamed(
-                                      register || reset
-                                          ? RouteNames.login
-                                          : RouteNames.register,
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
+                                _field(
+                                  TextFormField(
+                                    key: const Key('auth_email'),
+                                    controller: _email,
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.start,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                        ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    autofillHints: const [AutofillHints.email],
+                                    decoration: InputDecoration(
+                                      labelText: l.email,
+                                      prefixIcon: const Icon(
+                                        Icons.mail_outline,
+                                      ),
                                     ),
-                              child: Text(
-                                register || reset ? l.logIn : l.createAccount,
-                              ),
+                                    validator: (v) =>
+                                        !RegExp(
+                                          r'^[^\s@]+@[^\s@]+\.[^\s@]+$',
+                                        ).hasMatch(v?.trim() ?? '')
+                                        ? l.invalidEmail
+                                        : null,
+                                  ),
+                                ),
+                                if (!reset) ...[
+                                  const SizedBox(height: 16),
+                                  _passwordField(false),
+                                  if (register) ...[
+                                    const SizedBox(height: 16),
+                                    _passwordField(true),
+                                  ],
+                                ],
+                                if (!register && !reset)
+                                  AuthEntranceStage(
+                                    exitOnHome: true,
+                                    stage: 7,
+                                    child: Align(
+                                      alignment: AlignmentDirectional.centerEnd,
+                                      child: TextButton(
+                                        onPressed: loading
+                                            ? null
+                                            : () => context.goNamed(
+                                                RouteNames.forgotPassword,
+                                              ),
+                                        child: Text(l.forgotPassword),
+                                      ),
+                                    ),
+                                  ),
+                                const SizedBox(height: 20),
+                                AuthEntranceStage(
+                                  stage: 7,
+                                  child: AuthActionButton(
+                                    label: register
+                                        ? l.continueAction
+                                        : reset
+                                        ? l.sendReset
+                                        : title,
+                                    loading: loading,
+                                    onPressed: _submit,
+                                  ),
+                                ),
+                                if (!reset)
+                                  AuthSocialActions(
+                                    loading: loading,
+                                    onGoogle: _google,
+                                  ),
+                                const SizedBox(height: 20),
+                                AuthEntranceStage(
+                                  stage: 9,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      if (!reset)
+                                        Text(
+                                          register
+                                              ? l.haveAccount
+                                              : l.noAccount,
+                                        ),
+                                      TextButton(
+                                        onPressed: loading
+                                            ? null
+                                            : () => context.goNamed(
+                                                register || reset
+                                                    ? RouteNames.login
+                                                    : RouteNames.register,
+                                              ),
+                                        child: Text(
+                                          register || reset
+                                              ? l.logIn
+                                              : l.createAccount,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (!reset) ...[
+                                  const SizedBox(height: 12),
+                                  const AuthEntranceStage(
+                                    stage: 9,
+                                    child: AuthLanguageSelector(),
+                                  ),
+                                ],
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      if (!reset) ...[
-                        const SizedBox(height: 12),
-                        const AuthEntranceStage(
-                          stage: 9,
-                          child: AuthLanguageSelector(),
-                        ),
-                      ],
-                    ],
+                          ),
                   ),
                 ),
               ),

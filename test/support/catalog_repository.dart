@@ -1,8 +1,13 @@
 import 'package:egy/app/di/injection.dart';
 import 'package:egy/features/home/presentation/cubit/home_cubit.dart';
+import 'package:egy/features/home/presentation/cubit/home_search_cubit.dart';
 import 'package:egy/features/properties/domain/entities/property_category.dart';
 import 'package:egy/features/properties/domain/entities/property_listing.dart';
 import 'package:egy/features/properties/domain/repositories/catalog_repository.dart';
+import 'account_repository.dart';
+
+import 'package:egy/features/recommendations/domain/entities/recommendation_search.dart';
+import 'package:egy/features/recommendations/domain/repositories/recommendation_repository.dart';
 
 PropertyListing testListing(int id, PropertyCategory category) =>
     PropertyListing(
@@ -40,9 +45,28 @@ class TestCatalogRepository implements CatalogRepository {
       testListing(id, PropertyCategory.values[(id - 1) ~/ 100]);
 }
 
+class TestHomeSearchRepository implements RecommendationRepository {
+  @override
+  Future<RecommendationSearch> search(RecommendationQuery query) async =>
+      RecommendationSearch(
+        total: 0,
+        limit: query.limit,
+        offset: query.offset,
+        items: [],
+      );
+
+  @override
+  Future<List<PropertyListing>> similar(
+    int propertyId, {
+    int limit = 6,
+  }) async => [];
+}
+
 TestCatalogRepository registerTestHome() {
+  registerTestAccount();
   final repository = TestCatalogRepository();
   sl.registerSingleton<CatalogRepository>(repository);
   sl.registerFactory<HomeCubit>(HomeCubit.new);
+  sl.registerFactory(() => HomeSearchCubit(TestHomeSearchRepository()));
   return repository;
 }

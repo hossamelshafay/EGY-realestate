@@ -7,6 +7,8 @@ import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/app/localization/locale_cubit.dart';
 import 'package:egy/app/router/route_names.dart';
 import 'package:egy/app/theme/app_colors.dart';
+import 'package:egy/app/theme/theme_selector.dart';
+import 'package:egy/features/profile/presentation/widgets/profile_avatar.dart';
 import 'package:egy/core/widgets/locale_selector.dart';
 import 'package:egy/core/widgets/reveal_navigation.dart';
 import 'package:egy/features/authentication/presentation/cubit/session_cubit.dart';
@@ -33,6 +35,7 @@ class DrawerScaffold extends StatelessWidget {
           before.user?.id != after.user?.id ||
           before.user?.name != after.user?.name ||
           before.user?.email != after.user?.email ||
+          before.user?.avatarId != after.user?.avatarId ||
           before.signingOut != after.signingOut,
       listener: (context, state) {
         if (state.error) {

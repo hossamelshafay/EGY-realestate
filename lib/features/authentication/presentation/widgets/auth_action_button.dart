@@ -31,17 +31,21 @@ class AuthActionButton extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.white.withValues(alpha: 0),
         disabledBackgroundColor: AppColors.white.withValues(alpha: .25),
-        foregroundColor: AppColors.white,
+        foregroundColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.primaryNavy
+            : AppColors.white,
         shadowColor: AppColors.white.withValues(alpha: 0),
         minimumSize: const Size.fromHeight(56),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       child: loading
-          ? const SizedBox(
+          ? SizedBox(
               width: 24,
               height: 24,
               child: CircularProgressIndicator(
-                color: AppColors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.primaryNavy
+                    : AppColors.white,
                 strokeWidth: 2,
               ),
             )

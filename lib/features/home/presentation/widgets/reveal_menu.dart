@@ -19,13 +19,7 @@ class _HomeDrawer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    backgroundColor: AppColors.secondaryNavy,
-                    child: Icon(
-                      Icons.person_outline,
-                      color: AppColors.primaryGold,
-                    ),
-                  ),
+                  ProfileAvatar(avatarId: state.user?.avatarId, size: 56),
                   const SizedBox(height: 16),
                   Text(
                     state.user?.name?.trim().isNotEmpty == true
@@ -51,6 +45,7 @@ class _HomeDrawer extends StatelessWidget {
               ),
             ),
             _item(context, Icons.home_outlined, l.home, RouteNames.home),
+            _item(context, Icons.person_outline, l.profile, RouteNames.profile),
             _item(
               context,
               Icons.auto_awesome_outlined,
@@ -81,6 +76,10 @@ class _HomeDrawer extends StatelessWidget {
               l.settings,
               RouteNames.settings,
             ),
+            Divider(
+              color: AppColors.transparent,
+            ),
+            const Center(child: ThemeSelector(onNavy: true)),
             Divider(
               indent: 16,
               endIndent: 16,

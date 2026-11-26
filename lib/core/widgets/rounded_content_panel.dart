@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 
-import 'package:egy/app/theme/app_colors.dart';
 import 'package:egy/app/theme/app_dimensions.dart';
 
 /// White content panel with 24 px top-corner radius.
@@ -17,9 +16,9 @@ class RoundedContentPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(AppDimensions.radiusXl),
             topRight: Radius.circular(AppDimensions.radiusXl),
           ),

@@ -49,6 +49,11 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool enabled = onPressed != null && !isLoading;
+    final foreground =
+        Theme.of(context).brightness == Brightness.dark &&
+            variant == PrimaryButtonVariant.gold
+        ? AppColors.primaryNavy
+        : AppColors.white;
     return SizedBox(
       width: double.infinity,
       height: AppDimensions.buttonHeight,
@@ -71,11 +76,11 @@ class PrimaryButton extends StatelessWidget {
             ),
           ),
           child: isLoading
-              ? const SizedBox(
+              ? SizedBox(
                   width: 24,
                   height: 24,
                   child: CircularProgressIndicator(
-                    color: AppColors.white,
+                    color: foreground,
                     strokeWidth: 2,
                   ),
                 )
@@ -83,7 +88,7 @@ class PrimaryButton extends StatelessWidget {
                   label,
                   style: Theme.of(
                     context,
-                  ).textTheme.labelLarge?.copyWith(color: AppColors.white),
+                  ).textTheme.labelLarge?.copyWith(color: foreground),
                 ),
         ),
       ),

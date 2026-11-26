@@ -50,7 +50,7 @@ class LocaleSelector extends StatelessWidget {
                     ? AppColors.primaryGold
                     : onNavy
                     ? AppColors.white
-                    : AppColors.textSecondary,
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               child: Text(code == 'en' ? l.languageEnglish : l.languageArabic),
             ),

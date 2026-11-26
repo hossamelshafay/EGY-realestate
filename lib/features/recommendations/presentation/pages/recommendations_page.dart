@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/app/router/route_names.dart';
+import 'package:egy/app/theme/app_colors.dart';
 import 'package:egy/core/widgets/authenticated_scaffold.dart';
 import 'package:egy/core/widgets/ai/ai_feedback.dart';
 import 'package:egy/core/widgets/content_fade.dart';
+import 'package:egy/core/widgets/skeleton/app_skeleton.dart';
 import '../cubit/recommendations_cubit.dart';
 import 'package:egy/features/properties/presentation/widgets/listing_card.dart';
 import '../widgets/recommendation_filters.dart';
@@ -56,7 +58,7 @@ class RecommendationsPage extends StatelessWidget {
       return AiFeedback(failure: state.failure, onRetry: cubit.retry);
     }
     if (state is! RecommendationsReady) {
-      return const Center(child: CircularProgressIndicator());
+      return const SkeletonListingList(count: 3);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -71,6 +73,7 @@ class RecommendationsPage extends StatelessWidget {
           ContentFadeIn(
             key: ValueKey(property.id),
             child: ListingCard(
+              borderGlow: AppColors.white,
               property: property,
               onSimilar: () => context.pushNamed(
                 RouteNames.recommendationResults,
@@ -81,7 +84,7 @@ class RecommendationsPage extends StatelessWidget {
         if (state.failure != null)
           AiFeedback(failure: state.failure!, onRetry: cubit.more),
         if (state.loadingMore)
-          const Center(child: CircularProgressIndicator())
+          const SkeletonShimmer(child: SkeletonListingCard())
         else if (!state.similar && state.items.length < state.total)
           TextButton(
             key: const Key('recommendation_more'),

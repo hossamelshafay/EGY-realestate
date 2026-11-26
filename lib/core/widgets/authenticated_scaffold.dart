@@ -5,7 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:egy/app/localization/generated/app_localizations.dart';
 import 'package:egy/app/router/route_names.dart';
 import 'package:egy/app/theme/app_colors.dart';
-import 'package:egy/features/authentication/presentation/widgets/auth_header.dart';
+import 'brand_curve_surface.dart';
 
 import 'reveal_navigation.dart';
 
@@ -36,9 +36,8 @@ class AuthenticatedScaffold extends StatelessWidget {
         children: [
           AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.light,
-            child: ClipPath(
-              key: const Key('authenticated_header'),
-              clipper: const BrandHeaderClipper(24),
+            child: BrandCurveSurface(
+              clipKey: const Key('authenticated_header'),
               child: DecoratedBox(
                 decoration: const BoxDecoration(
                   gradient: AppColors.navyGradient,

@@ -48,7 +48,7 @@ void main() {
     );
     await tester.pumpWidget(App(prefs: prefs, router: router));
     await tester.pumpAndSettle();
-    final logo = tester.element(find.byKey(const Key('auth_logo')));
+    final logo = tester.element(find.byKey(const Key('auth_logo'), skipOffstage: false));
     for (final route in ['/login', '/register']) {
       router.go(route);
       await tester.pumpAndSettle();
@@ -92,7 +92,7 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(prefs.getString('locale') ?? 'en', code);
         expect(
-          identical(logo, tester.element(find.byKey(const Key('auth_logo')))),
+          identical(logo, tester.element(find.byKey(const Key('auth_logo'), skipOffstage: false))),
           isTrue,
         );
       }

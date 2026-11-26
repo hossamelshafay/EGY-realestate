@@ -174,6 +174,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orContinue => 'Or continue with';
 
   @override
+  String get continueAction => 'Continue';
+
+  @override
+  String get signupStepProgress => 'Step 2 of 2';
+
+  @override
+  String get chooseAvatarTitle => 'Choose Your Avatar';
+
+  @override
+  String get chooseAvatarSubtitle => 'Pick the look that represents you.';
+
+  @override
+  String get authProfilePartial =>
+      'Your account was created, but saving your profile failed. Tap Create Account to retry.';
+
+  @override
   String get noAccount => 'Don?t have an account?';
 
   @override
@@ -225,7 +241,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeMember => 'Your next chapter starts here';
 
   @override
-  String get homeSearchHint => 'Search for property, area, or developer...';
+  String get homeSearchHint => 'Area or property type';
+
+  @override
+  String get homeSearchSuggestions => 'Suggested properties';
 
   @override
   String get homeDiscover => 'Find a place to call home';
@@ -348,6 +367,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeAssistantBannerDescription =>
       'Personalized guidance to find a place that feels like home.';
+
+  @override
+  String get homeAssistantCta => 'Start Chat';
 
   @override
   String get homeResidential => 'Residential';
@@ -597,7 +619,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get propertyTypeOther => 'Other property type';
 
   @override
+  String get themeLight => 'Light mode';
+
+  @override
+  String get themeDark => 'Dark mode';
+
+  @override
   String get propertyDetails => 'Property details';
+
+  @override
+  String get propertyDescription => 'About this property';
+
+  @override
+  String get propertyAmenities => 'Amenities';
+
+  @override
+  String get propertyPhotos => 'More photos';
 
   @override
   String get favoritesEmpty => 'No saved properties yet.';
@@ -610,4 +647,136 @@ class AppLocalizationsEn extends AppLocalizations {
   String featuredPage(int page, int count) {
     return 'Property $page of $count';
   }
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get changeAvatar => 'Change avatar';
+
+  @override
+  String get chooseAvatar => 'Choose your avatar';
+
+  @override
+  String get avatarRequired => 'Choose an avatar before continuing.';
+
+  @override
+  String avatarMasculine(int number) {
+    return 'Masculine avatar $number';
+  }
+
+  @override
+  String avatarFeminine(int number) {
+    return 'Feminine avatar $number';
+  }
+
+  @override
+  String get accountDisplayName => 'Display name';
+
+  @override
+  String get accountNameRules => 'Use a name between 2 and 60 characters.';
+
+  @override
+  String get accountSave => 'Save changes';
+
+  @override
+  String get profileSaved => 'Saved';
+
+  @override
+  String get profileSyncPending =>
+      'Cloud profile sync failed. Retry Save to sync your changes.';
+
+  @override
+  String get emailVerified => 'Email verified';
+
+  @override
+  String get emailUnverified => 'Email not verified';
+
+  @override
+  String get sendVerification => 'Send verification email';
+
+  @override
+  String get verificationSent =>
+      'Verification email sent. Check your inbox, then refresh.';
+
+  @override
+  String get refreshAccount => 'Refresh account';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get newEmail => 'New email address';
+
+  @override
+  String get emailChangeSent =>
+      'Verification email sent. Verify the new email using the link sent by Firebase; your current email stays active until then.';
+
+  @override
+  String get emailUpdated => 'Email updated successfully.';
+
+  @override
+  String get emailLinkExpired =>
+      'The verification link has expired or is invalid. Request a new email change.';
+
+  @override
+  String get passwordChanged => 'Password changed successfully.';
+
+  @override
+  String get accountPasswordRules =>
+      'Use at least 8 characters for the new password.';
+
+  @override
+  String get accountReauthError =>
+      'Identity verification failed. Check your credentials and try again.';
+
+  @override
+  String get accountPermission =>
+      'Cloud access is denied. Check permissions or retry after access is restored.';
+
+  @override
+  String get accountCleanupIncomplete =>
+      'Deletion did not finish. Some account data may already be removed. Retry cleanup before deleting the account.';
+
+  @override
+  String get accountTryLater =>
+      'Too many attempts. Wait a while and try again.';
+
+  @override
+  String get accountProviderManaged =>
+      'This account uses its sign-in provider for authentication.';
+
+  @override
+  String get accountUnavailable =>
+      'The account service is unavailable. Check your connection and retry.';
+
+  @override
+  String get googleReauth =>
+      'Google will ask you to confirm this same account before continuing.';
+
+  @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountWarning =>
+      'Permanently delete this account and its app-managed profile, Favorites, and local chat history? This cannot be undone. Deletion stops if cloud cleanup cannot be verified.';
+
+  @override
+  String get deleteAccountConfirm => 'I understand. Delete my account';
+
+  @override
+  String get changeEmailInfo =>
+      'Reauthenticate, then verify the new mailbox. The account UID and saved data remain the same.';
+
+  @override
+  String get accountSecurity => 'Account security';
+
+  @override
+  String get profileAppearance => 'Your profile';
 }

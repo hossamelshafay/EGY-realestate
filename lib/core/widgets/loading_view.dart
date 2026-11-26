@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 
-import 'package:egy/app/theme/app_colors.dart';
 
 /// Centered loading indicator shown while async data is being fetched.
 ///
@@ -18,7 +17,7 @@ class LoadingView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CircularProgressIndicator(color: AppColors.primaryNavy),
+          CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           if (message != null) ...[
             const SizedBox(height: 16),
             Text(

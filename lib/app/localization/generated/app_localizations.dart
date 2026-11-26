@@ -416,6 +416,36 @@ abstract class AppLocalizations {
   /// **'Or continue with'**
   String get orContinue;
 
+  /// No description provided for @continueAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueAction;
+
+  /// No description provided for @signupStepProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step 2 of 2'**
+  String get signupStepProgress;
+
+  /// No description provided for @chooseAvatarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Avatar'**
+  String get chooseAvatarTitle;
+
+  /// No description provided for @chooseAvatarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the look that represents you.'**
+  String get chooseAvatarSubtitle;
+
+  /// No description provided for @authProfilePartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was created, but saving your profile failed. Tap Create Account to retry.'**
+  String get authProfilePartial;
+
   /// No description provided for @noAccount.
   ///
   /// In en, this message translates to:
@@ -515,8 +545,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search for property, area, or developer...'**
+  /// **'Area or property type'**
   String get homeSearchHint;
+
+  /// No description provided for @homeSearchSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested properties'**
+  String get homeSearchSuggestions;
 
   /// No description provided for @homeDiscover.
   ///
@@ -733,6 +769,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Personalized guidance to find a place that feels like home.'**
   String get homeAssistantBannerDescription;
+
+  /// No description provided for @homeAssistantCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Chat'**
+  String get homeAssistantCta;
 
   /// No description provided for @homeResidential.
   ///
@@ -1214,11 +1256,41 @@ abstract class AppLocalizations {
   /// **'Other property type'**
   String get propertyTypeOther;
 
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get themeDark;
+
   /// No description provided for @propertyDetails.
   ///
   /// In en, this message translates to:
   /// **'Property details'**
   String get propertyDetails;
+
+  /// No description provided for @propertyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'About this property'**
+  String get propertyDescription;
+
+  /// No description provided for @propertyAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get propertyAmenities;
+
+  /// No description provided for @propertyPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'More photos'**
+  String get propertyPhotos;
 
   /// No description provided for @favoritesEmpty.
   ///
@@ -1237,6 +1309,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Property {page} of {count}'**
   String featuredPage(int page, int count);
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @changeAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Change avatar'**
+  String get changeAvatar;
+
+  /// No description provided for @chooseAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your avatar'**
+  String get chooseAvatar;
+
+  /// No description provided for @avatarRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an avatar before continuing.'**
+  String get avatarRequired;
+
+  /// No description provided for @avatarMasculine.
+  ///
+  /// In en, this message translates to:
+  /// **'Masculine avatar {number}'**
+  String avatarMasculine(int number);
+
+  /// No description provided for @avatarFeminine.
+  ///
+  /// In en, this message translates to:
+  /// **'Feminine avatar {number}'**
+  String avatarFeminine(int number);
+
+  /// No description provided for @accountDisplayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display name'**
+  String get accountDisplayName;
+
+  /// No description provided for @accountNameRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a name between 2 and 60 characters.'**
+  String get accountNameRules;
+
+  /// No description provided for @accountSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get accountSave;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get profileSaved;
+
+  /// No description provided for @profileSyncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud profile sync failed. Retry Save to sync your changes.'**
+  String get profileSyncPending;
+
+  /// No description provided for @emailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get emailVerified;
+
+  /// No description provided for @emailUnverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified'**
+  String get emailUnverified;
+
+  /// No description provided for @sendVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Send verification email'**
+  String get sendVerification;
+
+  /// No description provided for @verificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Check your inbox, then refresh.'**
+  String get verificationSent;
+
+  /// No description provided for @refreshAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh account'**
+  String get refreshAccount;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPassword;
+
+  /// No description provided for @newEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'New email address'**
+  String get newEmail;
+
+  /// No description provided for @emailChangeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Verify the new email using the link sent by Firebase; your current email stays active until then.'**
+  String get emailChangeSent;
+
+  /// No description provided for @emailUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Email updated successfully.'**
+  String get emailUpdated;
+
+  /// No description provided for @emailLinkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'The verification link has expired or is invalid. Request a new email change.'**
+  String get emailLinkExpired;
+
+  /// No description provided for @passwordChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully.'**
+  String get passwordChanged;
+
+  /// No description provided for @accountPasswordRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 8 characters for the new password.'**
+  String get accountPasswordRules;
+
+  /// No description provided for @accountReauthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verification failed. Check your credentials and try again.'**
+  String get accountReauthError;
+
+  /// No description provided for @accountPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud access is denied. Check permissions or retry after access is restored.'**
+  String get accountPermission;
+
+  /// No description provided for @accountCleanupIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletion did not finish. Some account data may already be removed. Retry cleanup before deleting the account.'**
+  String get accountCleanupIncomplete;
+
+  /// No description provided for @accountTryLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a while and try again.'**
+  String get accountTryLater;
+
+  /// No description provided for @accountProviderManaged.
+  ///
+  /// In en, this message translates to:
+  /// **'This account uses its sign-in provider for authentication.'**
+  String get accountProviderManaged;
+
+  /// No description provided for @accountUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The account service is unavailable. Check your connection and retry.'**
+  String get accountUnavailable;
+
+  /// No description provided for @googleReauth.
+  ///
+  /// In en, this message translates to:
+  /// **'Google will ask you to confirm this same account before continuing.'**
+  String get googleReauth;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete this account and its app-managed profile, Favorites, and local chat history? This cannot be undone. Deletion stops if cloud cleanup cannot be verified.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand. Delete my account'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @changeEmailInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reauthenticate, then verify the new mailbox. The account UID and saved data remain the same.'**
+  String get changeEmailInfo;
+
+  /// No description provided for @accountSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Account security'**
+  String get accountSecurity;
+
+  /// No description provided for @profileAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile'**
+  String get profileAppearance;
 }
 
 class _AppLocalizationsDelegate

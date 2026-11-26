@@ -1,4 +1,6 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:egy/app/theme/app_theme.dart';
+import 'package:egy/app/theme/app_palette.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,11 +24,14 @@ class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key, this.fromSplash = false});
   final bool fromSplash;
   @override
-  Widget build(BuildContext context) => OnboardingEntrance(
-    enabled: fromSplash,
-    child: BlocProvider(
-      create: (_) => OnboardingCubit(context.read<SharedPreferences>()),
-      child: const _OnboardingView(),
+  Widget build(BuildContext context) => Theme(
+    data: AppTheme.light,
+    child: OnboardingEntrance(
+      enabled: fromSplash,
+      child: BlocProvider(
+        create: (_) => OnboardingCubit(context.read<SharedPreferences>()),
+        child: const _OnboardingView(),
+      ),
     ),
   );
 }
@@ -109,7 +114,7 @@ class _OnboardingViewState extends State<_OnboardingView>
       l.onboardingDescription3,
     ];
     return HandoffSurface(
-      color: AppColors.onboardingSurface,
+      color: AppPalette.canvas(context, AppColors.onboardingSurface),
       child: HandoffScope(
         handoff: _handoff,
         incoming: false,

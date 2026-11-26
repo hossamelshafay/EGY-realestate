@@ -1,22 +1,24 @@
 import 'dart:async';
+import 'package:egy/features/profile/presentation/pages/settings_page.dart';
+import 'package:egy/features/profile/presentation/pages/profile_page.dart';
+import 'package:egy/features/profile/presentation/pages/account_security_page.dart';
 import 'package:egy/app/di/injection.dart';
 import 'package:egy/features/authentication/presentation/cubit/session_cubit.dart';
 import 'package:egy/core/widgets/session_page.dart';
-import 'package:egy/core/widgets/authenticated_scaffold.dart';
+
 import 'package:egy/features/home/presentation/widgets/drawer_scaffold.dart';
 import 'package:egy/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:egy/features/properties/domain/entities/property_category.dart';
 import 'package:egy/features/properties/presentation/pages/property_catalog_page.dart';
 import 'package:egy/features/properties/presentation/pages/property_details_page.dart';
-import 'package:egy/app/localization/generated/app_localizations.dart';
+import 'package:egy/features/properties/presentation/widgets/property_hero.dart';
+
 import 'package:egy/features/authentication/presentation/pages/auth_page.dart';
 import 'package:egy/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:egy/features/splash/presentation/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
 import 'route_names.dart';
 import 'app_motion.dart';
 import 'screen_handoff.dart';
@@ -209,39 +211,56 @@ GoRouter createAppRouter({
           _internalRoute(
             name: RouteNames.propertyDetails,
             path: RoutePaths.propertyDetails,
-            builder: (context, state) => PropertyDetailsPage(
-              id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
-            ),
+            builder: (context, state) {
+              final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+              final preview = state.extra;
+              return PropertyDetailsPage(
+                id: id,
+                preview: preview is PropertyPreview && preview.property.id == id
+                    ? preview
+                    : null,
+              );
+            },
           ),
 
           // ── Settings ──────────────────────────────────────────────────────────────
           _internalRoute(
+            name: RouteNames.profile,
+            path: RoutePaths.profile,
+            builder: (context, _) => const ProfilePage(),
+          ),
+          _internalRoute(
+            name: RouteNames.changeAvatar,
+            path: RoutePaths.changeAvatar,
+            builder: (context, _) => const ProfilePage(edit: true),
+          ),
+          _internalRoute(
+            name: RouteNames.deleteAccount,
+            path: RoutePaths.deleteAccount,
+            builder: (context, _) =>
+                const AccountSecurityPage(action: AccountAction.delete),
+          ),
+          _internalRoute(
             name: RouteNames.settings,
             path: RoutePaths.settings,
-            builder: (context, _) => _PlaceholderScreen(
-              title: AppLocalizations.of(context).settings,
-            ),
+            builder: (context, _) => const SettingsPage(),
           ),
           _internalRoute(
             name: RouteNames.editProfile,
             path: RoutePaths.editProfile,
-            builder: (context, _) => _PlaceholderScreen(
-              title: AppLocalizations.of(context).editProfile,
-            ),
+            builder: (context, _) => const ProfilePage(edit: true),
           ),
           _internalRoute(
             name: RouteNames.changeEmail,
             path: RoutePaths.changeEmail,
-            builder: (context, _) => _PlaceholderScreen(
-              title: AppLocalizations.of(context).changeEmail,
-            ),
+            builder: (context, _) =>
+                const AccountSecurityPage(action: AccountAction.email),
           ),
           _internalRoute(
             name: RouteNames.changePassword,
             path: RoutePaths.changePassword,
-            builder: (context, _) => _PlaceholderScreen(
-              title: AppLocalizations.of(context).changePassword,
-            ),
+            builder: (context, _) =>
+                const AccountSecurityPage(action: AccountAction.password),
           ),
         ],
       ),
@@ -269,43 +288,6 @@ GoRoute _internalRoute({
 ///
 /// REMOVE each instance as the corresponding real screen is introduced.
 /// Do NOT use this widget outside of [appRouter].
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return AuthenticatedScaffold(
-      title: title,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.construction_rounded,
-              size: 48,
-              color: AppColors.primaryGold,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: AppTextStyles.textTheme.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              AppLocalizations.of(context).homeFeaturePending,
-              style: AppTextStyles.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _SessionRefresh extends ChangeNotifier {
   _SessionRefresh(this._session);
 

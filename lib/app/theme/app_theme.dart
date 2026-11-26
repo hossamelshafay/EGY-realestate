@@ -7,9 +7,8 @@ import 'app_text_styles.dart';
 
 /// Application [ThemeData] definitions.
 ///
-/// Light theme is the only currently approved mode.
-/// A dark theme stub is provided architecturally but must NOT be activated
-/// until the owner explicitly approves a dark mode implementation phase.
+/// Approved Navy/Gold light and charcoal dark appearance.
+/// The device preference supports explicit Light, Dark and System modes.
 abstract final class AppTheme {
   // ── Light theme ────────────────────────────────────────────────────────────
 
@@ -38,15 +37,84 @@ abstract final class AppTheme {
   );
 
   // ── Dark theme stub ────────────────────────────────────────────────────────
-  // DO NOT activate until a dark mode phase is explicitly approved.
-  // This stub prevents runtime errors if dark mode is accidentally requested.
+
+  // Matching typography across modes also keeps implicit widget styles interpolable.
   static ThemeData get dark => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primaryNavy,
-      brightness: Brightness.dark,
+    scaffoldBackgroundColor: AppColors.darkCanvas,
+    colorScheme: const ColorScheme.dark(
+      primary: AppColors.primaryGold,
+      onPrimary: AppColors.primaryNavy,
+      primaryContainer: AppColors.secondaryNavy,
+      onPrimaryContainer: AppColors.white,
+      secondary: AppColors.primaryGold,
+      onSecondary: AppColors.primaryNavy,
+      surface: AppColors.darkSurface,
+      onSurface: AppColors.darkText,
+      surfaceContainerHighest: AppColors.darkInput,
+      onSurfaceVariant: AppColors.darkMuted,
+      outline: AppColors.darkOutline,
+      error: AppColors.destructiveRed,
     ),
+    textTheme: AppTextStyles.textTheme.apply(
+      bodyColor: AppColors.darkText,
+      displayColor: AppColors.darkText,
+    ),
+    appBarTheme: _appBarTheme,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: _elevatedButtonTheme.style?.copyWith(
+        foregroundColor: const WidgetStatePropertyAll(AppColors.primaryNavy),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: _outlinedButtonTheme.style?.copyWith(
+        foregroundColor: const WidgetStatePropertyAll(AppColors.primaryGold),
+        side: const WidgetStatePropertyAll(
+          BorderSide(color: AppColors.primaryGold),
+        ),
+        textStyle: WidgetStatePropertyAll(
+          AppTextStyles.textTheme.labelLarge?.copyWith(
+            color: AppColors.primaryGold,
+          ),
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: _textButtonTheme.style?.copyWith(
+        foregroundColor: const WidgetStatePropertyAll(AppColors.primaryGold),
+        textStyle: WidgetStatePropertyAll(
+          AppTextStyles.textTheme.bodyMedium?.copyWith(
+            color: AppColors.primaryGold,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    ),
+    inputDecorationTheme: _inputDecorationTheme.copyWith(
+      fillColor: AppColors.darkInput,
+      hintStyle: const TextStyle(color: AppColors.darkMuted),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: AppColors.primaryGold),
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: AppColors.darkSurface,
+      surfaceTintColor: AppColors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+    chipTheme: const ChipThemeData(
+      backgroundColor: AppColors.darkInput,
+      selectedColor: AppColors.primaryGold,
+      labelStyle: TextStyle(color: AppColors.darkText),
+      secondaryLabelStyle: TextStyle(color: AppColors.primaryNavy),
+    ),
+    dividerTheme: const DividerThemeData(
+      color: AppColors.darkOutline,
+      thickness: 1,
+    ),
+    iconTheme: const IconThemeData(color: AppColors.darkMuted),
   );
 
   // ── Color scheme ───────────────────────────────────────────────────────────

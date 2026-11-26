@@ -7,6 +7,7 @@ import 'package:egy/core/widgets/ai/ai_feedback.dart';
 import 'package:egy/core/widgets/ai/ai_labels.dart';
 import 'package:egy/core/widgets/authenticated_scaffold.dart';
 import 'package:egy/core/widgets/content_fade.dart';
+import 'package:egy/core/widgets/skeleton/app_skeleton.dart';
 
 import '../../domain/entities/property_category.dart';
 import '../cubit/catalog_cubit.dart';
@@ -33,8 +34,9 @@ class PropertyCatalogPage extends StatelessWidget {
               child: KeyedSubtree(
                 key: ValueKey(state.runtimeType),
                 child: switch (state) {
-                  CatalogLoading() => const Center(
-                    child: CircularProgressIndicator(),
+                  CatalogLoading() => const SingleChildScrollView(
+                    padding: EdgeInsets.all(24),
+                    child: SkeletonListingList(count: 3),
                   ),
                   CatalogError(:final failure) => Center(
                     child: AiFeedback(failure: failure, onRetry: refresh),

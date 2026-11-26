@@ -16,7 +16,7 @@ class PredictionResult extends StatelessWidget {
     );
     return Card(
       key: const Key('prediction_result'),
-      color: AppColors.inputFill,
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

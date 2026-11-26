@@ -13,9 +13,11 @@ import 'package:egy/features/properties/presentation/cubit/catalog_cubit.dart';
 
 import '../cubit/home_cubit.dart';
 import 'home_featured_card.dart';
+import 'home_stage.dart';
 
 part 'home_carousel_indicators.dart';
 part 'home_featured_strip.dart';
+part 'home_featured_layer.dart';
 
 class _HomeFeaturedPagesState extends State<HomeFeaturedPages>
     with SingleTickerProviderStateMixin {
@@ -25,12 +27,9 @@ class _HomeFeaturedPagesState extends State<HomeFeaturedPages>
   late final AppLifecycleListener _lifecycle;
   late List<PropertyListing> _items;
   RenderBox? _viewport;
-  var _index = 0;
-  var _direction = 1;
+  int _index = 0, _direction = 1;
   var _drag = 0.0;
-  var _routeVisible = false;
-  var _reduced = false;
-  var _settling = false;
+  bool _routeVisible = false, _reduced = false, _settling = false;
 
   @override
   void initState() {
@@ -42,9 +41,7 @@ class _HomeFeaturedPagesState extends State<HomeFeaturedPages>
         _schedule();
       },
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _prefetch();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _prefetch());
   }
 
   bool get _foreground =>
@@ -185,6 +182,7 @@ class _HomeFeaturedPagesState extends State<HomeFeaturedPages>
       behind: _hasCard(_direction) ? _items[_index + _direction] : null,
       cardHeight: widget.cardHeight,
       motion: _motion,
+      entrance: widget.entrance,
       direction: _direction,
       progress: _countdown,
       onPointer: (pointer, down) {

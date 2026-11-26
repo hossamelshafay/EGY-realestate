@@ -12,6 +12,10 @@ class PropertyListing {
     this.bathrooms,
     this.imageUrl,
     this.city,
+    this.localizedCity,
+    this.description,
+    this.amenities = const [],
+    this.images = const [],
   });
 
   final int id;
@@ -19,4 +23,6 @@ class PropertyListing {
   final double? price, size, bedrooms, bathrooms;
   final String? imageUrl;
   final String? city;
+  final String? localizedCity, description;
+  final List<String> amenities, images;
 }

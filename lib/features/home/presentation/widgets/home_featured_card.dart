@@ -1,35 +1,42 @@
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-import 'package:egy/app/localization/generated/app_localizations.dart';
-import 'package:egy/app/router/route_names.dart';
 import 'package:egy/app/theme/app_colors.dart';
-import 'package:egy/core/widgets/ai/ai_labels.dart';
 import 'package:egy/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:egy/features/properties/domain/entities/property_listing.dart';
-import 'package:egy/features/properties/presentation/property_type_label.dart';
-import 'package:egy/features/properties/presentation/widgets/property_photo.dart';
+import 'package:egy/features/properties/presentation/widgets/property_hero.dart';
 
-/// Full-bleed Home card using the same facts and saved state as the catalog.
-class HomeFeaturedCard extends StatelessWidget {
-  const HomeFeaturedCard({super.key, required this.property});
+/// The front and rear layers use the same concise listing summary.
+class HomeFeaturedCard extends StatefulWidget {
+  const HomeFeaturedCard({
+    super.key,
+    required this.property,
+    required this.inFront,
+  });
+
   final PropertyListing property;
+  final bool inFront;
+
+  @override
+  State<HomeFeaturedCard> createState() => _HomeFeaturedCardState();
+}
+
+class _HomeFeaturedCardState extends State<HomeFeaturedCard> {
+  final _photoTag = Object();
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
+    final property = widget.property;
+    final inFront = widget.inFront;
     final text = Theme.of(context).textTheme;
-    final price = NumberFormat.decimalPattern(
-      l.localeName,
-    ).format(property.price);
+    final preview = PropertyPreview(property, _photoTag);
     return ClipRRect(
       key: ValueKey('featured_${property.id}'),
       borderRadius: BorderRadius.circular(24),
       child: Stack(
         fit: StackFit.expand,
         children: [
-          PropertyPhoto(url: property.imageUrl),
+          PropertyHero(property: property, tag: inFront ? preview.tag : null),
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -37,52 +44,10 @@ class HomeFeaturedCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   AppColors.transparent,
-                  AppColors.primaryNavy.withValues(alpha: .3),
+                  AppColors.primaryNavy.withValues(alpha: .32),
                   AppColors.primaryNavy,
                 ],
-                stops: const [0, .38, 1],
-              ),
-            ),
-          ),
-          if (GoRouter.maybeOf(context) != null)
-            Material(
-              color: AppColors.transparent,
-              child: InkWell(
-                onTap: () => context.pushNamed(
-                  RouteNames.propertyDetails,
-                  pathParameters: {'id': '${property.id}'},
-                ),
-              ),
-            ),
-          PositionedDirectional(
-            top: 12,
-            start: 12,
-            child: FavoriteButton(property, filled: true),
-          ),
-          PositionedDirectional(
-            top: 16,
-            start: 68,
-            end: 16,
-            child: Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 190),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  aiCategoryLabel(l, property.category),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: text.labelMedium?.copyWith(
-                    color: AppColors.primaryNavy,
-                  ),
-                ),
+                stops: const [0, .40, 1],
               ),
             ),
           ),
@@ -90,86 +55,52 @@ class HomeFeaturedCard extends StatelessWidget {
             start: 16,
             end: 16,
             bottom: 16,
-            child: IgnorePointer(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    propertyTypeLabel(l, property.propertyType),
-                    style: text.labelLarge?.copyWith(color: AppColors.white),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  property.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: text.titleLarge?.copyWith(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w700,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    property.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: text.titleLarge?.copyWith(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                ),
+                if (property.location.trim().isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
                     property.location,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: text.bodyMedium?.copyWith(color: AppColors.white),
+                  ),
+                ],
+                if (property.description case final description?
+                    when description.trim().isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: text.bodySmall?.copyWith(color: AppColors.white),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    property.price == null
-                        ? l.aiMissingPrice
-                        : '$price ${property.category.endsWith('rent') ? l.aiMonthly : l.aiCurrency}',
-                    style: text.titleLarge?.copyWith(
-                      color: AppColors.primaryGold,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 8,
-                    children: [
-                      if (property.bedrooms case final value?)
-                        _detail(
-                          context,
-                          Icons.bed_outlined,
-                          l.homeBeds(value.toInt()),
-                        ),
-                      if (property.bathrooms case final value?)
-                        _detail(
-                          context,
-                          Icons.bathtub_outlined,
-                          l.homeBaths(value.toInt()),
-                        ),
-                      if (property.size case final value?)
-                        _detail(
-                          context,
-                          Icons.square_foot_rounded,
-                          l.homeArea(value.toInt()),
-                        ),
-                    ],
-                  ),
                 ],
-              ),
+              ],
             ),
+          ),
+          if (inFront && GoRouter.maybeOf(context) != null)
+            Material(
+              color: AppColors.transparent,
+              child: InkWell(onTap: () => preview.open(context)),
+            ),
+          PositionedDirectional(
+            top: 12,
+            start: 12,
+            child: FavoriteButton(property, filled: true),
           ),
         ],
       ),
     );
   }
-
-  Widget _detail(BuildContext context, IconData icon, String label) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(icon, size: 18, color: AppColors.white),
-      const SizedBox(width: 4),
-      Text(
-        label,
-        style: Theme.of(
-          context,
-        ).textTheme.bodySmall?.copyWith(color: AppColors.white),
-      ),
-    ],
-  );
 }

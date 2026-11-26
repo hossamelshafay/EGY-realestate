@@ -19,14 +19,17 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<AuthUser> register(String name, String email, String password) =>
+  Future<AuthUser> register(String name, String email, String password, {String? avatarId}) =>
       signIn(email, password);
   @override
-  Future<AuthUser> signInWithGoogle() => signIn('', '');
+  Future<AuthUser> signInWithGoogle({String? avatarId}) => signIn('', '');
   @override
   Future<void> resetPassword(String email) async {
     this.email = email;
   }
+
+  @override
+  Future<AuthUser?> refreshUser() async => currentUser;
 
   @override
   Future<void> signOut() async {}

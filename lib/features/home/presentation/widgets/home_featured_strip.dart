@@ -16,11 +16,13 @@ class HomeFeaturedPages extends StatefulWidget {
     required this.catalog,
     required this.filters,
     required this.cardHeight,
+    required this.entrance,
   });
 
   final CatalogReady catalog;
   final HomeReady filters;
   final double cardHeight;
+  final Animation<double> entrance;
 
   @override
   State<HomeFeaturedPages> createState() => _HomeFeaturedPagesState();
@@ -65,6 +67,7 @@ class _FeaturedStrip extends StatelessWidget {
     required this.behind,
     required this.cardHeight,
     required this.motion,
+    required this.entrance,
     required this.direction,
     required this.progress,
     required this.onPointer,
@@ -79,6 +82,7 @@ class _FeaturedStrip extends StatelessWidget {
   final PropertyListing? behind;
   final double cardHeight;
   final Animation<double> motion;
+  final Animation<double> entrance;
   final int direction;
   final ValueListenable<double> progress;
   final void Function(int pointer, bool down) onPointer;
@@ -125,6 +129,7 @@ class _FeaturedStrip extends StatelessWidget {
                               key: ValueKey(back.id),
                               property: back,
                               motion: motion,
+                              entrance: entrance,
                               sign: sign,
                               travel: width,
                               inFront: false,
@@ -133,6 +138,7 @@ class _FeaturedStrip extends StatelessWidget {
                             key: ValueKey(front.id),
                             property: front,
                             motion: motion,
+                            entrance: entrance,
                             sign: sign,
                             travel: width * direction,
                             inFront: true,
@@ -152,50 +158,4 @@ class _FeaturedStrip extends StatelessWidget {
       ],
     );
   }
-}
-
-class _FeaturedLayer extends StatelessWidget {
-  const _FeaturedLayer({
-    super.key,
-    required this.property,
-    required this.motion,
-    required this.sign,
-    required this.travel,
-    required this.inFront,
-  });
-
-  final PropertyListing property;
-  final Animation<double> motion;
-  final double sign, travel;
-  final bool inFront;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsetsDirectional.only(end: 16),
-    child: AnimatedBuilder(
-      animation: motion,
-      child: RepaintBoundary(child: HomeFeaturedCard(property: property)),
-      builder: (context, child) {
-        final progress = motion.value;
-        final offset = inFront ? -travel * progress : 16 * (1 - progress);
-        final layer = Transform.translate(
-          offset: Offset(sign * offset, 0),
-          child: Transform.scale(
-            scaleY: inFront ? 1 : .94 + .06 * progress,
-            child: child,
-          ),
-        );
-        if (inFront) {
-          return IgnorePointer(
-            key: const Key('home_featured_front'),
-            ignoring: progress > 0,
-            child: layer,
-          );
-        }
-        return ExcludeSemantics(
-          child: ExcludeFocus(child: IgnorePointer(child: layer)),
-        );
-      },
-    ),
-  );
 }

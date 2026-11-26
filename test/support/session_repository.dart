@@ -37,12 +37,14 @@ class SessionTestRepository implements AuthRepository {
   Future<AuthUser> signIn(String email, String password) =>
       _authenticate('Nour');
   @override
-  Future<AuthUser> register(String name, String email, String password) =>
+  Future<AuthUser> register(String name, String email, String password, {String? avatarId}) =>
       _authenticate(name);
   @override
-  Future<AuthUser> signInWithGoogle() => _authenticate('Nour');
+  Future<AuthUser> signInWithGoogle({String? avatarId}) => _authenticate('Nour');
   @override
   Future<void> resetPassword(String email) async {}
+  @override
+  Future<AuthUser?> refreshUser() async => _user;
   @override
   Future<void> signOut() async {
     if (failLogout) throw StateError('signout failed');

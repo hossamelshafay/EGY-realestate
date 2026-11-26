@@ -8,6 +8,7 @@ import 'package:egy/app/di/injection.dart';
 import 'package:egy/app/router/route_names.dart';
 import 'package:egy/app/router/screen_handoff.dart';
 import 'package:egy/app/theme/app_colors.dart';
+import 'package:egy/features/home/presentation/widgets/home_palette.dart';
 import 'package:egy/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:egy/features/authentication/presentation/cubit/session_cubit.dart';
 import 'package:egy/features/authentication/presentation/pages/auth_page.dart';
@@ -132,8 +133,19 @@ class _SessionPageState extends State<SessionPage>
             home: _home,
             child: AnimatedBuilder(
               animation: _motion,
-              builder: (context, _) => HandoffSurface(
-                color: AppColors.white,
+              builder: (context, _) {
+                final homeBg = Interval(
+                  .4,
+                  .9,
+                  curve: Curves.easeInOut,
+                ).transform(_motion.home.value);
+                final surfaceColor = Color.lerp(
+                  Theme.of(context).colorScheme.surface,
+                  HomePalette.canvas(context),
+                  homeBg,
+                )!;
+                return HandoffSurface(
+                  color: surfaceColor,
                 child: PopScope(
                   canPop: !_motion.busy,
                   child: IgnorePointer(
@@ -167,7 +179,8 @@ class _SessionPageState extends State<SessionPage>
                     ),
                   ),
                 ),
-              ),
+                );
+              },
             ),
           ),
         ),

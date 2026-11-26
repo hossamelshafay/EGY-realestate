@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:egy/app/theme/app_palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:egy/app/di/injection.dart';
 import 'package:egy/features/authentication/domain/repositories/auth_repository.dart';
@@ -146,8 +147,7 @@ class _SplashPageState extends State<SplashPage>
     return BlocListener<SplashCubit, SplashState>(
       listener: _onStateChange,
       child: ColoredBox(
-        color: AppColors
-            .splashSurface, // ivory — must match @color/egy_splash_bg (#FAF6EE)
+        color: AppPalette.canvas(context, AppColors.splashSurface),
         child: SafeArea(
           child: Center(
             child: LayoutBuilder(
@@ -170,6 +170,9 @@ class _SplashPageState extends State<SplashPage>
                               _clock,
                               _reduced,
                               handoff: _handoff,
+                              dark:
+                                  Theme.of(context).brightness ==
+                                  Brightness.dark,
                             ),
                           ),
                         ),

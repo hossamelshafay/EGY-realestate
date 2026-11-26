@@ -148,6 +148,8 @@ void main() {
       expect((chat.state as ChatReady).messages, hasLength(4));
       repo.pending = Completer<ChatReply>();
       final sending = chat.send('pending');
+      expect((chat.state as ChatReady).messages.last.text, 'pending');
+      expect((chat.state as ChatReady).sending, isTrue);
       await chat.send('duplicate');
       expect(repo.sessions, hasLength(3));
       chat.reset();
@@ -173,7 +175,7 @@ void main() {
       final chat = ChatCubit(repo);
       addTearDown(chat.close);
       await chat.send('hello');
-      expect((chat.state as ChatReady).messages, isEmpty);
+      expect((chat.state as ChatReady).messages.single.text, 'hello');
       expect((chat.state as ChatReady).failure, isA<NetworkFailure>());
       repo.error = null;
       await chat.retry();

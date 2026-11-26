@@ -22,6 +22,23 @@ abstract final class PropertyListingModel {
     double? number(String key) =>
         body[key] == null && allowMissing ? null : ApiJson.number(body[key]);
     final image = body['image_url'];
+    String? optionalText(String key) {
+      final field = body[key];
+      return field is String && field.trim().isNotEmpty ? field.trim() : null;
+    }
+
+    List<String> optionalStrings(String key) {
+      final field = body[key];
+      return field is List<Object?>
+          ? List.unmodifiable(
+              field
+                  .whereType<String>()
+                  .map((item) => item.trim())
+                  .where((item) => item.isNotEmpty),
+            )
+          : const [];
+    }
+
     if (image != null && image is! String) {
       throw const FormatException('Invalid image URL');
     }
@@ -37,6 +54,10 @@ abstract final class PropertyListingModel {
       bathrooms: number('bathrooms'),
       imageUrl: image as String?,
       city: body['city'] as String?,
+      localizedCity: optionalText('city_ar'),
+      description: optionalText('description'),
+      amenities: optionalStrings('amenities'),
+      images: optionalStrings('images'),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:egy/app/di/injection.dart';
 import 'package:egy/app/localization/generated/app_localizations.dart';
-import 'package:egy/app/theme/app_colors.dart';
+
 import 'package:egy/features/properties/domain/entities/property_listing.dart';
 
 import '../cubit/favorites_cubit.dart';
@@ -56,8 +56,8 @@ class FavoriteButton extends StatelessWidget {
                 icon: icon,
                 isSelected: saved,
                 style: IconButton.styleFrom(
-                  backgroundColor: AppColors.white,
-                  foregroundColor: AppColors.primaryNavy,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  foregroundColor: Theme.of(context).colorScheme.onSurface,
                 ),
               )
             : IconButton(

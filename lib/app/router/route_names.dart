@@ -25,6 +25,9 @@ abstract final class RouteNames {
 
   // ── Settings ────────────────────────────────────────────────────────────────
   static const String settings = 'settings';
+  static const String profile = 'profile';
+  static const String changeAvatar = 'changeAvatar';
+  static const String deleteAccount = 'deleteAccount';
   static const String editProfile = 'editProfile';
   static const String changeEmail = 'changeEmail';
   static const String changePassword = 'changePassword';
@@ -52,6 +55,9 @@ abstract final class RoutePaths {
   static const String propertyCatalog = '/properties';
   static const String propertyDetails = '/properties/:id';
   static const String settings = '/settings';
+  static const String profile = '/profile';
+  static const String changeAvatar = '/settings/avatar';
+  static const String deleteAccount = '/settings/delete-account';
   static const String editProfile = '/settings/profile';
   static const String changeEmail = '/settings/change-email';
   static const String changePassword = '/settings/change-password';

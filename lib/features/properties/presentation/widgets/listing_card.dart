@@ -3,39 +3,52 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:egy/app/localization/generated/app_localizations.dart';
-import 'package:egy/app/router/route_names.dart';
 import 'package:egy/app/theme/app_colors.dart';
 import 'package:egy/core/widgets/ai/ai_labels.dart';
+import 'package:egy/core/widgets/orbiting_card_border.dart';
 import 'package:egy/features/favorites/presentation/widgets/favorite_button.dart';
 
 import '../../domain/entities/property_listing.dart';
 import '../property_type_label.dart';
-import 'property_photo.dart';
+import 'property_hero.dart';
 
 /// Real catalog card reused by discovery, favorites, recommendations, and chat.
-class ListingCard extends StatelessWidget {
+class ListingCard extends StatefulWidget {
   const ListingCard({
     super.key,
     required this.property,
     this.onSimilar,
     this.showDetails = true,
+    this.borderGlow,
   });
 
   final PropertyListing property;
   final VoidCallback? onSimilar;
   final bool showDetails;
+  final Color? borderGlow;
+
+  @override
+  State<ListingCard> createState() => _ListingCardState();
+}
+
+class _ListingCardState extends State<ListingCard> {
+  final _photoTag = Object();
 
   @override
   Widget build(BuildContext context) {
+    final property = widget.property;
+    final onSimilar = widget.onSimilar;
+    final preview = PropertyPreview(property, _photoTag);
     final l = AppLocalizations.of(context);
     final number = NumberFormat.decimalPattern(
       Localizations.localeOf(context).languageCode,
     );
     final text = Theme.of(context).textTheme;
-    return Card(
+    final card = Card(
       key: ValueKey('listing_${property.id}'),
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -43,7 +56,12 @@ class ListingCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                child: PropertyPhoto(url: property.imageUrl, height: 160),
+                height: 160,
+                child: PropertyHero(
+                  property: property,
+                  tag: preview.tag,
+                  radius: 0,
+                ),
               ),
               PositionedDirectional(
                 top: 8,
@@ -57,9 +75,23 @@ class ListingCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(property.title, style: text.titleMedium),
+                Text(
+                  property.title,
+                  style: text.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 8),
                 Text(property.location),
+                if (property.description case final description?
+                    when description.trim().isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
                 const SizedBox(height: 8),
                 Text(
                   '${propertyTypeLabel(l, property.propertyType)} · ${aiCategoryLabel(l, property.category)}',
@@ -88,12 +120,9 @@ class ListingCard extends StatelessWidget {
                 ),
                 Wrap(
                   children: [
-                    if (showDetails && GoRouter.maybeOf(context) != null)
+                    if (widget.showDetails && GoRouter.maybeOf(context) != null)
                       TextButton(
-                        onPressed: () => context.pushNamed(
-                          RouteNames.propertyDetails,
-                          pathParameters: {'id': '${property.id}'},
-                        ),
+                        onPressed: () => preview.open(context),
                         child: Text(l.propertyDetails),
                       ),
                     if (onSimilar != null)
@@ -108,6 +137,12 @@ class ListingCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: widget.borderGlow != null
+          ? OrbitingCardBorder(color: widget.borderGlow!, child: card)
+          : card,
     );
   }
 }

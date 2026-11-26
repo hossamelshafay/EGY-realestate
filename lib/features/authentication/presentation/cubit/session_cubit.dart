@@ -62,6 +62,49 @@ class SessionCubit extends Cubit<SessionState> {
   }
   final AuthRepository _repository;
   late final StreamSubscription<AuthUser?> _subscription;
+  DateTime? _lastRefreshAt;
+  bool _refreshing = false;
+
+  /// Reloads the authoritative Firebase user (e.g. on app resume after email verification).
+  Future<void> refresh({bool force = false}) async {
+    if (isClosed ||
+        _refreshing ||
+        state.user == null ||
+        state.authenticating ||
+        state.signingOut) {
+      return;
+    }
+    final now = DateTime.now();
+    if (!force &&
+        _lastRefreshAt != null &&
+        now.difference(_lastRefreshAt!) < const Duration(seconds: 5)) {
+      return;
+    }
+    _refreshing = true;
+    _lastRefreshAt = now;
+    try {
+      final refreshed = await _repository.refreshUser();
+      if (isClosed) return;
+      if (refreshed != null &&
+          (refreshed.email != state.user?.email ||
+              refreshed.emailVerified != state.user?.emailVerified ||
+              refreshed.name != state.user?.name ||
+              refreshed.avatarId != state.user?.avatarId)) {
+        emit(
+          SessionReady(
+            user: refreshed,
+            authenticating: state.authenticating,
+            signingOut: state.signingOut,
+            awaitingFeedback: state.awaitingFeedback,
+          ),
+        );
+      }
+    } catch (_) {
+      // Transient reload errors must not clear a valid cached session.
+    } finally {
+      _refreshing = false;
+    }
+  }
 
   /// Prevent early Firebase events from replacing an unfinished sign-in form.
   void beginAuthentication() =>

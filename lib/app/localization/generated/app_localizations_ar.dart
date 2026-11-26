@@ -173,6 +173,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get orContinue => 'أو تابع باستخدام';
 
   @override
+  String get continueAction => 'متابعة';
+
+  @override
+  String get signupStepProgress => 'الخطوة ٢ من ٢';
+
+  @override
+  String get chooseAvatarTitle => 'اختر صورتك الرمزية';
+
+  @override
+  String get chooseAvatarSubtitle => 'اختر المظهر الذي يعبر عنك.';
+
+  @override
+  String get authProfilePartial =>
+      'تم إنشاء حسابك، لكن تعذر حفظ بيانات الملف الشخصي. اضغط إنشاء الحساب لإعادة المحاولة.';
+
+  @override
   String get noAccount => 'ليس لديك حساب؟';
 
   @override
@@ -224,7 +240,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeMember => 'خطوتك القادمة تبدأ هنا';
 
   @override
-  String get homeSearchHint => 'ابحث عن عقار أو منطقة أو مطوّر...';
+  String get homeSearchHint => 'المنطقة أو نوع العقار';
+
+  @override
+  String get homeSearchSuggestions => 'عقارات مقترحة';
 
   @override
   String get homeDiscover => 'اكتشف منزلك القادم';
@@ -344,6 +363,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get homeAssistantBannerDescription =>
       'مساعدة تناسب تفضيلاتك لاكتشاف منزلك القادم.';
+
+  @override
+  String get homeAssistantCta => 'ابدأ المحادثة';
 
   @override
   String get homeResidential => 'سكني';
@@ -590,7 +612,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get propertyTypeOther => 'نوع عقار آخر';
 
   @override
+  String get themeLight => 'الوضع الفاتح';
+
+  @override
+  String get themeDark => 'الوضع الداكن';
+
+  @override
   String get propertyDetails => 'تفاصيل العقار';
+
+  @override
+  String get propertyDescription => 'نبذة عن العقار';
+
+  @override
+  String get propertyAmenities => 'المرافق والمزايا';
+
+  @override
+  String get propertyPhotos => 'المزيد من الصور';
 
   @override
   String get favoritesEmpty => 'لا توجد عقارات محفوظة بعد.';
@@ -603,4 +640,135 @@ class AppLocalizationsAr extends AppLocalizations {
   String featuredPage(int page, int count) {
     return 'العقار $page من $count';
   }
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get changeAvatar => 'تغيير الصورة الرمزية';
+
+  @override
+  String get chooseAvatar => 'اختر صورتك الرمزية';
+
+  @override
+  String get avatarRequired => 'اختر صورة رمزية قبل المتابعة.';
+
+  @override
+  String avatarMasculine(int number) {
+    return 'صورة رمزية رجالية $number';
+  }
+
+  @override
+  String avatarFeminine(int number) {
+    return 'صورة رمزية نسائية $number';
+  }
+
+  @override
+  String get accountDisplayName => 'الاسم الظاهر';
+
+  @override
+  String get accountNameRules => 'استخدم اسماً من حرفين إلى ٦٠ حرفاً.';
+
+  @override
+  String get accountSave => 'حفظ التغييرات';
+
+  @override
+  String get profileSaved => 'تم الحفظ';
+
+  @override
+  String get profileSyncPending =>
+      'تعذرت مزامنة الملف الشخصي سحابياً. أعد محاولة الحفظ.';
+
+  @override
+  String get emailVerified => 'البريد الإلكتروني مؤكد';
+
+  @override
+  String get emailUnverified => 'البريد الإلكتروني غير مؤكد';
+
+  @override
+  String get sendVerification => 'إرسال رسالة تأكيد';
+
+  @override
+  String get verificationSent =>
+      'تم إرسال رسالة التأكيد. تحقق من بريدك ثم حدّث الحساب.';
+
+  @override
+  String get refreshAccount => 'تحديث الحساب';
+
+  @override
+  String get appearance => 'المظهر';
+
+  @override
+  String get currentPassword => 'كلمة المرور الحالية';
+
+  @override
+  String get newPassword => 'كلمة المرور الجديدة';
+
+  @override
+  String get newEmail => 'البريد الإلكتروني الجديد';
+
+  @override
+  String get emailChangeSent =>
+      'تم إرسال رسالة التحقق. أكد البريد الجديد عبر الرابط المرسل من Firebase؛ سيظل بريدك الحالي فعالاً حتى التأكيد.';
+
+  @override
+  String get emailUpdated => 'تم تحديث البريد الإلكتروني بنجاح.';
+
+  @override
+  String get emailLinkExpired =>
+      'انتهت صلاحية رابط التحقق أو أنه غير صالح. اطلب تغيير البريد مرة أخرى.';
+
+  @override
+  String get passwordChanged => 'تم تغيير كلمة المرور بنجاح.';
+
+  @override
+  String get accountPasswordRules =>
+      'استخدم ٨ أحرف على الأقل لكلمة المرور الجديدة.';
+
+  @override
+  String get accountReauthError =>
+      'تعذر تأكيد هويتك. تحقق من بيانات الدخول وحاول مجدداً.';
+
+  @override
+  String get accountPermission =>
+      'تم رفض الوصول السحابي. تحقق من الصلاحيات أو أعد المحاولة بعد استعادة الوصول.';
+
+  @override
+  String get accountCleanupIncomplete =>
+      'لم يكتمل الحذف. ربما أُزيل بعض بيانات الحساب بالفعل. أعد المحاولة لاستكمال التنظيف قبل حذف الحساب.';
+
+  @override
+  String get accountTryLater => 'محاولات كثيرة. انتظر قليلاً ثم حاول مجدداً.';
+
+  @override
+  String get accountProviderManaged =>
+      'يستخدم هذا الحساب موفر تسجيل الدخول لإثبات الهوية.';
+
+  @override
+  String get accountUnavailable =>
+      'خدمة الحساب غير متاحة. تحقق من الاتصال وحاول مجدداً.';
+
+  @override
+  String get googleReauth =>
+      'سيطلب منك Google تأكيد هذا الحساب نفسه قبل المتابعة.';
+
+  @override
+  String get deleteAccount => 'حذف الحساب';
+
+  @override
+  String get deleteAccountWarning =>
+      'هل تريد حذف هذا الحساب وملفه والمفضلة وسجل الدردشة المحلي نهائياً؟ لا يمكن التراجع. يتوقف الحذف إذا تعذر التحقق من تنظيف البيانات السحابية.';
+
+  @override
+  String get deleteAccountConfirm => 'أفهم ذلك. احذف حسابي';
+
+  @override
+  String get changeEmailInfo =>
+      'أعد إثبات هويتك ثم أكد البريد الجديد. سيبقى معرّف الحساب وبياناته المحفوظة كما هما.';
+
+  @override
+  String get accountSecurity => 'أمان الحساب';
+
+  @override
+  String get profileAppearance => 'ملفك الشخصي';
 }

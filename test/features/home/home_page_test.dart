@@ -136,11 +136,17 @@ void main() {
           expect(frontCard(1), findsOneWidget);
           await tester.ensureVisible(find.byKey(const Key('home_search')));
           await tester.pumpAndSettle();
-          await tester.enterText(
-            find.byKey(const Key('home_search')),
-            'no such home',
-          );
+          await tester.tap(find.byKey(const Key('home_search')));
           await tester.pumpAndSettle();
+          final query = find.byKey(const Key('home_search_query'));
+          expect(tester.widget<TextField>(query).controller!.text, isEmpty);
+          expect(find.byKey(const Key('home_search_result_1')), findsOneWidget);
+          await tester.enterText(query, 'no such home');
+          await tester.pump(const Duration(milliseconds: 300));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(const Key('home_search_close')));
+          await tester.pumpAndSettle();
+          expect(query, findsNothing);
           expect(find.byKey(const Key('home_featured_pages')), findsNothing);
           expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox.shrink());

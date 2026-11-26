@@ -1,7 +1,8 @@
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:egy/core/constants/api_constants.dart';
 import 'package:egy/core/errors/failures.dart';
 import 'package:egy/core/network/api_client.dart';
 
@@ -29,6 +30,68 @@ class RecordingAdapter implements HttpClientAdapter {
 }
 
 void main() {
+  test('Android debug sends catalog requests through ADB reverse', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    final adapter = RecordingAdapter();
+    final client = ApiClient(
+      baseUrl: 'http://127.0.0.1:8000',
+      dio: Dio()..httpClientAdapter = adapter,
+      idToken: () async => 'test-token',
+    );
+
+    const payload = {'category': 'buy', 'limit': 5, 'exclude_ids': <int>[]};
+    await client.request(ApiConstants.catalogSample, data: payload);
+    await client.request('${ApiConstants.recommendationsById}/17');
+
+    final request = adapter.requests.first;
+    expect(request.uri.host, '127.0.0.1');
+    expect(request.uri.port, 8000);
+    expect(request.uri.path, ApiConstants.catalogSample);
+    expect(request.method, 'POST');
+    expect(request.data, payload);
+    expect(request.headers['Authorization'], 'Bearer test-token');
+    expect(adapter.requests.last.method, 'GET');
+  });
+
+  test(
+    'Android reverse still requires an explicit port and a Firebase token',
+    () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      final adapter = RecordingAdapter();
+      final dio = Dio()..httpClientAdapter = adapter;
+      for (final url in [
+        'http://127.0.0.1',
+        'http://127.0.0.1:0',
+        'http://127.0.0.1:65536',
+        'http://localhost:8000',
+        'http://[::1]:8000',
+        'https://127.0.0.1:8000',
+      ]) {
+        final client = ApiClient(
+          baseUrl: url,
+          dio: dio,
+          idToken: () async => 'test-token',
+        );
+        await expectLater(
+          client.request(ApiConstants.catalogSample, data: {}),
+          throwsA(const ServerFailure('configuration')),
+        );
+      }
+      final signedOut = ApiClient(
+        baseUrl: 'http://127.0.0.1:8000',
+        dio: dio,
+        idToken: () async => null,
+      );
+      await expectLater(
+        signedOut.request(ApiConstants.catalogSample, data: {}),
+        throwsA(isA<UnauthenticatedFailure>()),
+      );
+      expect(adapter.requests, isEmpty);
+    },
+  );
+
   test(
     'refreshes tokens and applies model timeouts without redirects',
     () async {
@@ -54,6 +117,8 @@ void main() {
   );
 
   test('rejects invalid hosts and missing auth before transport', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
     final adapter = RecordingAdapter();
     final dio = Dio()..httpClientAdapter = adapter;
     for (final url in [
@@ -83,5 +148,40 @@ void main() {
       throwsA(isA<UnauthenticatedFailure>()),
     );
     expect(adapter.requests, isEmpty);
+  });
+
+  test('allowsAndroidReverse permits non-release Android 127.0.0.1:port and blocks release', () {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    final uri = Uri.parse('http://127.0.0.1:8000');
+    expect(ApiClient.allowsAndroidReverse(uri, isRelease: false), isTrue);
+    expect(ApiClient.allowsAndroidReverse(uri, isRelease: true), isFalse);
+  });
+
+  test('allowsLocalLoopback permits Web 127.0.0.1/localhost in non-release and blocks release', () {
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://127.0.0.1:8000'),
+        isRelease: false,
+        isWeb: true,
+      ),
+      isTrue,
+    );
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://localhost:8000'),
+        isRelease: false,
+        isWeb: true,
+      ),
+      isTrue,
+    );
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://127.0.0.1:8000'),
+        isRelease: true,
+        isWeb: true,
+      ),
+      isFalse,
+    );
   });
 }

@@ -73,7 +73,7 @@ class AppTextField extends StatelessWidget {
         Text(
           label,
           style: textTheme.labelMedium?.copyWith(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -88,7 +88,7 @@ class AppTextField extends StatelessWidget {
           readOnly: readOnly,
           autofocus: autofocus,
           maxLines: maxLines,
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
+          style: textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
           decoration: InputDecoration(
             hintText: hint,
             errorText: errorText,
