@@ -184,4 +184,34 @@ void main() {
       isFalse,
     );
   });
+
+  test('allowsLocalLoopback permits iOS Simulator 127.0.0.1/localhost in non-release and blocks release', () {
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://127.0.0.1:8000'),
+        isRelease: false,
+        isWeb: false,
+        platform: TargetPlatform.iOS,
+      ),
+      isTrue,
+    );
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://localhost:8000'),
+        isRelease: false,
+        isWeb: false,
+        platform: TargetPlatform.iOS,
+      ),
+      isTrue,
+    );
+    expect(
+      ApiClient.allowsLocalLoopback(
+        Uri.parse('http://127.0.0.1:8000'),
+        isRelease: true,
+        isWeb: false,
+        platform: TargetPlatform.iOS,
+      ),
+      isFalse,
+    );
+  });
 }

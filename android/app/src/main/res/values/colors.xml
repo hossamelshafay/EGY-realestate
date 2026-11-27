@@ -2,4 +2,5 @@
 <resources>
     <!-- EGY splash ivory background — matches CairoSkylinePainter and Flutter SplashPage -->
     <color name="egy_splash_bg">#FAF6EE</color>
+    <color name="ic_launcher_background">#031A2D</color>
 </resources>

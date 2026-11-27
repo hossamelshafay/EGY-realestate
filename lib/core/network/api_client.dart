@@ -38,14 +38,15 @@ class ApiClient {
     if (isRelease) return false;
     final effectivePlatform = platform ?? defaultTargetPlatform;
     final isAndroid = !isWeb && effectivePlatform == TargetPlatform.android;
-    if (!isWeb && !isAndroid) return false;
+    final isIos = !isWeb && effectivePlatform == TargetPlatform.iOS;
+    if (!isWeb && !isAndroid && !isIos) return false;
     if (uri.scheme != 'http' ||
         !uri.hasPort ||
         uri.port <= 0 ||
         uri.port > 65535) {
       return false;
     }
-    if (isWeb) {
+    if (isWeb || isIos) {
       return uri.host == '127.0.0.1' || uri.host == 'localhost';
     }
     return uri.host == '127.0.0.1';
