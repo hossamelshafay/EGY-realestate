@@ -2,7 +2,7 @@
 
 **Full-Stack AI-Driven Egyptian Real Estate Discovery, Valuation, and Advisory Platform**
 
-EGY DEVELOPMENT is an independent, full-stack real estate platform engineered with **Flutter** (Android and Web), **Firebase** (Authentication and Cloud Firestore), and a **FastAPI** AI/ML backend. The system unifies categorized property discovery, hybrid machine-learning recommendations over 62,977 cleaned listings, ensemble price valuation, and a session-aware conversational AI assistant inside a bilingual (English LTR / Arabic RTL) interface with Light and Dark themes.
+EGY DEVELOPMENT is an independent, full-stack real estate platform engineered with **Flutter** (Android, dedicated responsive Web, and iOS-ready Mobile), **Firebase** (Authentication and Cloud Firestore), and a **FastAPI** AI/ML backend. The system unifies categorized property discovery, hybrid machine-learning recommendations over 62,977 cleaned listings, ensemble price valuation, and a session-aware conversational AI assistant inside a bilingual (English LTR / Arabic RTL) interface with Light and Dark themes.
 
 ---
 
@@ -13,7 +13,7 @@ EGY DEVELOPMENT is an independent, full-stack real estate platform engineered wi
 - **ML Price Prediction**: Real-time property valuation in EGP using a trained `StackingRegressor` ensemble (`scikit-learn` + `XGBoost`), returning rounded price estimates, per-meter rates, and a ±8% heuristic range.
 - **Conversational AI Assistant**: Authenticated Gemini-powered property advisor (`GeminiClient`) with UID-bound server-side TTL session management and encrypted client-side chat persistence.
 - **Firebase Identity & Cloud Sync**: Email/Password and Google Sign-In authentication, two-step sign-up with avatar selection, UID-scoped Cloud Firestore profiles and favorites, and automatic email-verification refresh on app resume.
-- **Shared Android & Web Client**: Single Flutter codebase supporting Android (USB ADB reverse, LAN Wi-Fi in Debug/Profile, HTTPS in Release) and Flutter Web with strict build-mode transport validation.
+- **Shared Multi-Platform Client**: Single Flutter codebase powering Android, a dedicated responsive Flutter Web desktop experience (separate `lib/core/web/` and `lib/features/*/web/` UI layers), and an iOS-ready Mobile configuration while sharing Cubits, repositories, Firebase, and FastAPI contracts.
 
 ---
 
@@ -108,7 +108,25 @@ https://github.com/user-attachments/assets/b53e056c-eb8c-414d-aa60-4ad8cfb7cd50
 
 ---
 
-## Feature Gallery — Screenshots
+## Flutter Web Experience
+
+Unlike a stretched mobile layout, Flutter Web uses a dedicated responsive presentation layer (`lib/core/web/` and `lib/features/*/web/`) while reusing the same Cubits, repositories, Firebase Auth/Firestore integration, and FastAPI AI backend.
+
+<p align="center">
+  <img src="assets/img/home-web.png"
+       alt="EGY DEVELOPMENT Flutter Web Home"
+       width="900" />
+</p>
+
+- **Desktop Navigation (`WebAppShell`)**: Clean horizontal top navigation bar (`Home`, `Search`, `Recommendations`, `Price Prediction`, `AI Assistant`, `Favorites`), Light/Dark theme toggle, EN/AR language switcher, account menu, and a responsive drawer fallback on narrow viewports.
+- **Responsive Home & Property Discovery**: Hero search banner (`HomeSearchCubit`), 3-column AI Tools cards, category-filtered featured property grids (`WebHomePage`, `WebCatalogPage`), and a two-column property details gallery (`WebPropertyDetailsPage`).
+- **50/50 Split-Screen Authentication (`WebSplitAuthLayout`, `WebAuthPage`)**: Skips Mobile Splash/Onboarding on Web and presents a navy brand panel paired with Login, 2-step Sign Up (with 6-avatar selection), Forgot Password, and Google Sign-In.
+- **Web AI Tools & Safe Markdown Chat**: Dedicated `WebRecommendationsPage` (sidebar filters + grid), `WebPredictionPage` (two-column specs & valuation), and `WebChatPage` with `WebMarkdownText` (bold, italic, lists, safe `http`/`https` links, automatic Arabic RTL/English LTR per paragraph, and horizontal recommendation cards).
+- **Web Theme & Performance**: Dedicated `WebPalette` / `WebTheme` Light and Dark tokens (`#0D1722` background, `#172737` cards, `#243648` inputs, `#EAA81C` gold accent in Dark Mode) with instant Web theme switching (bypassing Mobile's `RenderRepaintBoundary` circular capture on Web).
+
+---
+
+## Feature Gallery — Mobile Screenshots
 
 <table>
   <tr>
@@ -297,6 +315,23 @@ flutter run -d chrome `
 
 ---
 
+## iOS Readiness & Mac Setup
+
+The repository is prepared on the configuration, branding, and networking layers for a macOS developer to clone, configure signing, and run on an iOS Simulator or physical iPhone. **Note:** Native iOS compilation (`pod install`, `xcodebuild`) has not yet been executed on macOS.
+
+- **iOS Project & Branding**: Deployment target updated to iOS `15.0` in `ios/Runner.xcodeproj/project.pbxproj` and `ios/Podfile`, `Info.plist` display name set to `EGY Development` with scoped `NSAllowsLocalNetworking = true`, and all 15 opaque `AppIcon.appiconset` icons generated from `assets/img/logo.png`.
+- **Firebase & Networking**: `DefaultFirebaseOptions.ios` (`real-estate-e1418`, `com.example.egy`) is configured in `lib/firebase_options.dart`, and `ApiClient.allowsLocalLoopback` supports `127.0.0.1` / `localhost` on `TargetPlatform.iOS` in Debug/Profile builds.
+- **Mac Developer Requirements**: Requires macOS, Xcode, CocoaPods, adding `ios/Runner/GoogleService-Info.plist` (+ `REVERSED_CLIENT_ID` URL scheme for Google Sign-In), and selecting an Apple Signing Team in `ios/Runner.xcworkspace`.
+
+See the step-by-step guide in [docs/IOS_SETUP.md](docs/IOS_SETUP.md) and the macOS bootstrap script at [scripts/setup_ios.sh](scripts/setup_ios.sh):
+
+```bash
+chmod +x scripts/setup_ios.sh
+./scripts/setup_ios.sh
+```
+
+---
+
 ## Testing & Quality Assurance
 
 ### Flutter Analysis & Tests
@@ -319,9 +354,9 @@ cd EGY_DEVELOPMENT_ai
 
 ```text
 egy/
-├── android/                  # Android manifests (debug/profile/main) and Gradle config
-├── assets/                   # Brand images, Lottie animations, and README media
-├── docs/                     # Technical docs (API contracts, architecture, theme, startup)
+├── android/                  # Android manifests, Gradle config, and EGY launcher icons
+├── assets/                   # Brand images (logo, home-web.png), Lottie animations, README media
+├── docs/                     # Technical docs (API contracts, architecture, theme, IOS_SETUP.md)
 ├── EGY_DEVELOPMENT_ai/       # FastAPI backend, ML/recommendation artifacts, and tests
 │   ├── api/                  # chat.py, predict.py, recommendations.py
 │   ├── core/                 # auth.py, config.py, price_prediction.py, recommendation_engine.py, sessions.py
@@ -329,13 +364,14 @@ egy/
 │   ├── models/               # Saved regression, clustering, and CBF artifacts
 │   ├── src/chatbot/          # GeminiClient and conversation engine
 │   └── tests/                # Backend unittest suite
+├── ios/                      # iOS Runner, Podfile (iOS 15.0), Info.plist, and EGY AppIcons
 ├── lib/
-│   ├── app/                  # App shell, DI (get_it), ARB l10n, go_router, AppTheme
-│   ├── core/                 # ApiClient, failures, shared curved/skeleton widgets
-│   └── features/             # Feature-First MVVM modules (10 features)
-├── scripts/                  # Local backend supervisor and smoke verification scripts
-├── test/                     # Flutter unit, widget, theme, and transition test suites
-├── web/                      # Flutter Web entrypoint
+│   ├── app/                  # App shell, DI (get_it), ARB l10n, platform-aware go_router, AppTheme
+│   ├── core/                 # ApiClient, failures, shared mobile widgets, and core/web/ design system
+│   └── features/             # Feature-First MVVM modules (10 features, Mobile presentation/ + web/)
+├── scripts/                  # Local backend supervisor, smoke checks, and setup_ios.sh
+├── test/                     # Flutter unit, widget, theme, Web responsive, and transition tests
+├── web/                      # Flutter Web entrypoint, manifest.json, and EGY favicon/icons
 ├── firestore.rules           # UID-scoped Cloud Firestore security rules
 └── pubspec.yaml              # Flutter dependencies and asset declarations
 ```
@@ -348,3 +384,4 @@ egy/
 - **In-Memory Server Chat Sessions**: `SessionManager` holds active LLM sessions in single-process memory with a 30-minute TTL; server restarts clear active server-side LLM context, while local chat transcripts remain stored on the client device.
 - **Local HTTP Development**: Development builds target local HTTP (`127.0.0.1` or LAN IP); production deployments require an HTTPS reverse proxy and setting `API_BASE_URL` to an `https://` URL.
 - **Firestore Rules Deployment**: Updated `/users/{uid}` rules in `firestore.rules` must be deployed (`firebase deploy --only firestore:rules`) for live cloud profile sync.
+- **iOS Build Pending macOS**: iOS project settings, Podfile, AppIcons, and setup documentation were prepared on Windows; `pod install`, `GoogleService-Info.plist` placement, Xcode signing, and Simulator/iPhone verification must be run on macOS.
