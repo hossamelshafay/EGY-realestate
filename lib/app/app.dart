@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:egy/core/web/web_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,8 +59,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           builder: (context, mode) => MaterialApp.router(
             title: 'EGY Development',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
+            theme: kIsWeb ? WebTheme.light(AppTheme.light) : AppTheme.light,
+            darkTheme: kIsWeb ? WebTheme.dark(AppTheme.dark) : AppTheme.dark,
             themeMode: mode.mode,
             themeAnimationDuration: Duration.zero,
             routerConfig: widget.router ?? appRouter,

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +89,9 @@ class _ThemeRevealState extends State<ThemeReveal>
       final controller = context.read<ThemeCubit>();
       final wasDark = Theme.of(context).brightness == Brightness.dark;
       final willBeDark = mode == ThemeMode.dark;
-      if (MediaQuery.disableAnimationsOf(context) || wasDark == willBeDark) {
+      if (kIsWeb ||
+          MediaQuery.disableAnimationsOf(context) ||
+          wasDark == willBeDark) {
         await controller.select(mode);
         return;
       }
@@ -165,6 +168,7 @@ class _ThemeRevealState extends State<ThemeReveal>
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) return widget.child;
     if (MediaQuery.disableAnimationsOf(context) && _outgoing != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _cancel());
     }

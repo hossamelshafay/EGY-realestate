@@ -1,4 +1,15 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:egy/core/web/web_app_shell.dart';
+import 'package:egy/features/authentication/web/pages/web_auth_page.dart';
+import 'package:egy/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:egy/features/favorites/web/pages/web_favorites_page.dart';
+import 'package:egy/features/home/web/pages/web_home_page.dart';
+import 'package:egy/features/profile/web/pages/web_profile_page.dart';
+import 'package:egy/features/profile/web/pages/web_settings_page.dart';
+import 'package:egy/features/properties/web/pages/web_catalog_page.dart';
+import 'package:egy/features/properties/web/pages/web_property_details_page.dart';
 import 'package:egy/features/profile/presentation/pages/settings_page.dart';
 import 'package:egy/features/profile/presentation/pages/profile_page.dart';
 import 'package:egy/features/profile/presentation/pages/account_security_page.dart';
@@ -40,13 +51,32 @@ final GoRouter appRouter = createAppRouter(
 GoRouter createAppRouter({
   SessionCubit? session,
   String initialLocation = RoutePaths.splash,
+  bool isWeb = kIsWeb,
 }) {
   final refresh = _SessionRefresh(session);
+  final effectiveInitial =
+      isWeb &&
+          (initialLocation == RoutePaths.splash ||
+              initialLocation == RoutePaths.onboarding)
+      ? (session?.state.user == null ? RoutePaths.login : RoutePaths.home)
+      : initialLocation;
+
+  if (isWeb) {
+    return GoRouter(
+      refreshListenable: refresh,
+      redirect: (context, state) =>
+          sessionRedirect(session?.state, state.uri.path, isWeb: true),
+      initialLocation: effectiveInitial,
+      debugLogDiagnostics: false,
+      routes: _webRoutes(session: session),
+    );
+  }
+
   return GoRouter(
     refreshListenable: refresh,
     redirect: (context, state) =>
-        sessionRedirect(session?.state, state.uri.path),
-    initialLocation: initialLocation,
+        sessionRedirect(session?.state, state.uri.path, isWeb: false),
+    initialLocation: effectiveInitial,
     debugLogDiagnostics: false,
     routes: [
       // ── Splash ────────────────────────────────────────────────────────────────
@@ -281,6 +311,202 @@ GoRoute _internalRoute({
     child: builder(context, state),
   ),
 );
+
+List<RouteBase> _webRoutes({SessionCubit? session}) => [
+  GoRoute(
+    name: RouteNames.login,
+    path: RoutePaths.login,
+    pageBuilder: (context, state) => NoTransitionPage(
+      key: state.pageKey,
+      child: const WebAuthPage(mode: WebAuthMode.login),
+    ),
+  ),
+  GoRoute(
+    name: RouteNames.register,
+    path: RoutePaths.register,
+    pageBuilder: (context, state) => NoTransitionPage(
+      key: state.pageKey,
+      child: const WebAuthPage(mode: WebAuthMode.register),
+    ),
+  ),
+  GoRoute(
+    name: RouteNames.forgotPassword,
+    path: RoutePaths.forgotPassword,
+    pageBuilder: (context, state) => NoTransitionPage(
+      key: state.pageKey,
+      child: const WebAuthPage(mode: WebAuthMode.forgotPassword),
+    ),
+  ),
+  ShellRoute(
+    builder: (context, state, child) {
+      final effectiveSession =
+          session ??
+          (sl.isRegistered<SessionCubit>() ? sl<SessionCubit>() : null);
+      final shell = WebAppShell(currentPath: state.uri.path, child: child);
+      final providers = [
+        if (effectiveSession != null)
+          BlocProvider<SessionCubit>.value(value: effectiveSession),
+        if (sl.isRegistered<FavoritesCubit>())
+          BlocProvider<FavoritesCubit>.value(value: sl<FavoritesCubit>()),
+      ];
+      if (providers.isEmpty) return shell;
+      return MultiBlocProvider(providers: providers, child: shell);
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.home,
+        path: RoutePaths.home,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebHomePage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.recommendations,
+        path: RoutePaths.recommendations,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: AiDestination.recommendations(
+            isWeb: true,
+            similarTo: int.tryParse(
+              state.uri.queryParameters['similarTo'] ??
+                  state.uri.queryParameters['similar'] ??
+                  '',
+            ),
+          ),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.recommendationResults,
+        path: RoutePaths.recommendationResults,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: AiDestination.recommendations(
+            isWeb: true,
+            similarTo: int.tryParse(
+              state.uri.queryParameters['similarTo'] ??
+                  state.uri.queryParameters['similar'] ??
+                  '',
+            ),
+          ),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.pricePrediction,
+        path: RoutePaths.pricePrediction,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: AiDestination.prediction(isWeb: true),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.pricePredictionResult,
+        path: RoutePaths.pricePredictionResult,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: AiDestination.prediction(isWeb: true),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.aiChat,
+        path: RoutePaths.aiChat,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: AiDestination.chat(isWeb: true),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.favorites,
+        path: RoutePaths.favorites,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebFavoritesPage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.propertyCatalog,
+        path: RoutePaths.propertyCatalog,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: WebCatalogPage(
+            initialCategory:
+                PropertyCategory.fromCode(
+                  state.uri.queryParameters['category'],
+                ) ??
+                PropertyCategory.residentialSale,
+          ),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.propertyDetails,
+        path: RoutePaths.propertyDetails,
+        pageBuilder: (context, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+          return NoTransitionPage(
+            key: state.pageKey,
+            child: WebPropertyDetailsPage(id: id),
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteNames.profile,
+        path: RoutePaths.profile,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebProfilePage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.changeAvatar,
+        path: RoutePaths.changeAvatar,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebProfilePage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.editProfile,
+        path: RoutePaths.editProfile,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebProfilePage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.settings,
+        path: RoutePaths.settings,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebSettingsPage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.changeEmail,
+        path: RoutePaths.changeEmail,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebSettingsPage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.changePassword,
+        path: RoutePaths.changePassword,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebSettingsPage(),
+        ),
+      ),
+      GoRoute(
+        name: RouteNames.deleteAccount,
+        path: RoutePaths.deleteAccount,
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const WebSettingsPage(),
+        ),
+      ),
+    ],
+  ),
+];
 
 // ── Shared placeholder ────────────────────────────────────────────────────────
 

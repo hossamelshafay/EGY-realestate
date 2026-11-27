@@ -1,10 +1,18 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:egy/features/authentication/presentation/cubit/session_cubit.dart';
 
 import 'route_names.dart';
 
-/// A sign-in operation owns its route until the repository operation completes.
-String? sessionRedirect(SessionState? session, String path) {
-  if (path == RoutePaths.splash || path == RoutePaths.onboarding) return null;
+/// Pure guard for unit testing and router configuration.
+String? sessionRedirect(
+  SessionState? session,
+  String path, {
+  bool isWeb = kIsWeb,
+}) {
+  if (path == RoutePaths.splash || path == RoutePaths.onboarding) {
+    if (!isWeb) return null;
+    return session?.user == null ? RoutePaths.login : RoutePaths.home;
+  }
   final auth =
       path == RoutePaths.login ||
       path == RoutePaths.register ||
